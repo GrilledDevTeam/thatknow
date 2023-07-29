@@ -1,6 +1,6 @@
-## System Priavate Files ##
+## System Private Files ##
 application.properties
-
+application-secret.properties
 
 ###
 HELP.md
