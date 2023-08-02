@@ -10,66 +10,73 @@ import java.net.URLEncoder;
 
 
 public class WeatherAPI {
-    private final String apiKey;
+    private final String strAPIKey;
 
-
-    public WeatherAPI(String apiKey){
-        this.apiKey = apiKey;
+    public WeatherAPI(String strAPIKey){
+        this.strAPIKey = strAPIKey;
     }
 
-    public WeatherResponse getWeatherData(WeatherAPIParameter parameter) throws UnsupportedEncodingException, IOException{
+    /**
+     * API 통신 후 JSON/XML 형태의 String 데이터 반환
+     * 
+     * @param parameter weather API 통신용 파라미터 클래스 입력
+     * @return String 반환
+     * @throws UnsupportedEncodingException
+     * @throws IOException
+     */
+    public WeatherResponse getResponse(WeatherAPIParameter parameter) throws UnsupportedEncodingException, IOException {
         final String strRequestUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
         final String strDivideSector = "?";
         final String strDivideOption = "&";
-        final String strEqual = "=";
+        final String strEqueal = "=";
 
         StringBuilder urlStringBuilder = new StringBuilder(strRequestUrl);
         urlStringBuilder.append(strDivideSector);
 
         urlStringBuilder.append(URLEncoder.encode("serviceKey", "UTF-8"));
-        urlStringBuilder.append(strEqual);
-        urlStringBuilder.append(apiKey);
+        urlStringBuilder.append(strEqueal);
+        urlStringBuilder.append(strAPIKey);
 
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("numOfRows", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getNumOfRows(), "UTF-8"));
 
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("pageNo", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getPageNo(), "UTF-8"));
         
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("dataType", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getDataType(), "UTF-8"));
         
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("base_date", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getBaseDate(), "UTF-8"));
 
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("base_time", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getBaseTime(), "UTF-8"));
 
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("nx", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getNx(), "UTF-8"));
         
         urlStringBuilder.append(strDivideOption);
 
         urlStringBuilder.append(URLEncoder.encode("ny", "UTF-8"));
-        urlStringBuilder.append(strEqual);
+        urlStringBuilder.append(strEqueal);
         urlStringBuilder.append(URLEncoder.encode(parameter.getNy(), "UTF-8"));
         
         URL url = new URL(urlStringBuilder.toString());
@@ -78,6 +85,8 @@ public class WeatherAPI {
         httpConnection.setRequestMethod("GET");
         httpConnection.setRequestProperty("Content-type", "application/json");
         
+
+        // System.out.println("Response code: " + conn.getResponseCode());
 
         BufferedReader bufferedReader;
 

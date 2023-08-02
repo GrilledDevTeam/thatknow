@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class WeatherResponse {
-    private WeatherResponseHour[] responseData;
+    private WeatherResponseHour[] responseHours;
     private String rawData;
 
     public WeatherResponse(String rawData) {
@@ -14,7 +14,7 @@ public class WeatherResponse {
     }
 
     private void parsingData(String ApiData) {
-        responseData = new WeatherResponseHour[24];
+        responseHours = new WeatherResponseHour[24];
         String[] hourDataList = new String [24];
 
         for (int i = 0; i < hourDataList.length; i++) 
@@ -34,7 +34,7 @@ public class WeatherResponse {
             // "dataType":"JSON","pageNo":1,"numOfRows":300,"totalCount":882
             JSONObject weatherItems = (JSONObject)weatherBody.get("items");
             JSONArray weatherItem = (JSONArray)weatherItems.get("item");
-            // baseDate, baseTime, category, fcstDate, fcstTime, fcstValue, nx, ny
+            // baseDate, baseTime, category, fcstDate, fcstTime, fcstValue, x, y
             
             StringBuilder dataStringBuilder = new StringBuilder();
             
@@ -100,7 +100,7 @@ public class WeatherResponse {
             {
                 if (!hourDataList[i].isEmpty())
                 {
-                    responseData[i] = new WeatherResponseHour(hourDataList[i]);
+                    responseHours[i] = new WeatherResponseHour(hourDataList[i]);
                 }
             }
         }
@@ -110,8 +110,8 @@ public class WeatherResponse {
         }
     }
 
-    public WeatherResponseHour[] getResponseDataList() {
-        return responseData;
+    public WeatherResponseHour[] getHoursResponse() {
+        return responseHours;
     }
 
     public String getRawData() {

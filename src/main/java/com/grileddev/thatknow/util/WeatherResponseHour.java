@@ -2,10 +2,18 @@ package com.grileddev.thatknow.util;
 
 import java.util.StringTokenizer;
 
+import com.grileddev.thatknow.web.entity.weatherResponseHourEntity.WeatherResponseHourEntity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class WeatherResponseHour {
     private String nx;
     private String ny;
@@ -85,5 +93,22 @@ public class WeatherResponseHour {
 
     public String getData() {
         return fcstTime + " TMP : " + TMP + " TMN : " + TMN + " TMX : " + TMX + " REH : " + REH + " SKY : " + SKY + " POP : " + POP + " PTY : " + PTY + " PCP : " + PCP + " SNO : " + SNO + " WSD : " + WSD;
+    }
+
+    public WeatherResponseHourEntity toEntity() {
+        return WeatherResponseHourEntity.builder()
+        .nx(nx)
+        .ny(ny)
+        .TMP(TMP)
+        .TMN(TMN)
+        .TMX(TMX)
+        .REH(REH)
+        .SKY(SKY)
+        .POP(POP)
+        .PTY(PTY)
+        .PCP(PCP)
+        .SNO(SNO)
+        .WSD(WSD)
+        .build();
     }
 }

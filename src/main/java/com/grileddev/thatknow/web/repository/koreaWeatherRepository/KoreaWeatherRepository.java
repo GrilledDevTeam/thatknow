@@ -7,5 +7,5 @@ import com.grileddev.thatknow.web.entity.weatherResponseHourEntity.WeatherRespon
 
 
 public interface KoreaWeatherRepository extends JpaRepository<WeatherResponseHourEntity, String> {
-
+    public WeatherResponseHourEntity findDataByNxAndNyAndFcstTime(String nx, String ny, String fcstTime);
 }

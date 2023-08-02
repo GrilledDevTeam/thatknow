@@ -1,12 +1,12 @@
 package com.grileddev.thatknow.web.controller;
 
-import com.grileddev.thatknow.util.AreaToCoordinate;
+import com.grileddev.thatknow.util.AreaToGridXY;
 import com.grileddev.thatknow.util.DateToDate;
 import com.grileddev.thatknow.util.WeatherAPI;
 import com.grileddev.thatknow.util.WeatherAPIParameter;
 import com.grileddev.thatknow.util.WeatherResponse;
 import com.grileddev.thatknow.util.WeatherResponseHour;
-
+import com.grileddev.thatknow.web.database.DBmanager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,9 +27,16 @@ public class controller {
     @Value("${Global.Data-go-kr-api-key}")
     private String apiKey;
 
-    @Autowired
-    AreaToCoordinate areaToCoordinate;
+    private final DBmanager dbManager;
+    private final AreaToGridXY areaToGridXY;
 
+
+    @Autowired
+    public controller(DBmanager dbManager, AreaToGridXY areaToGridXY) {
+        this.dbManager = dbManager;
+        this.areaToGridXY = areaToGridXY;
+    }
+    
     @GetMapping("/")
     public String main(){
         return "main";
@@ -38,34 +45,26 @@ public class controller {
 
     @PostMapping("/test")
     public String mainTest(String stateAndCityAndTown, String time, Model model) throws IOException {
-
-        DateToDate dateToDate = new DateToDate();
-        dateToDate.setTimeForAPIParameter(time);
-
-        areaToCoordinate.setCoordinateByAreaName(stateAndCityAndTown);
-
-
         WeatherAPI api = new WeatherAPI(apiKey);
-        WeatherAPIParameter apiParameter = new WeatherAPIParameter();
-        
-        apiParameter.setNumOfRows("290");
-        apiParameter.setNx(areaToCoordinate.getNx());
-        apiParameter.setNy(areaToCoordinate.getNy());
+        WeatherAPIParameter parameter = new WeatherAPIParameter();
 
-        
-        WeatherResponse response = api.getWeatherData(apiParameter);
-        WeatherResponseHour[] result = response.getResponseDataList();
-        
+        parameter.setBaseDate(DateToDate.DateToString(DateToDate.yesterday()));
+        parameter.setBaseTime(time);
 
-        //response 데이터를 Model 에 넘기기
-        //thymeleaf each 문 사용하려면 컬렉션으로 넘겨야 한다네요
-        List<WeatherResponseHour> result2 = new ArrayList<WeatherResponseHour>();
+        // parameter.setNumOfRowsByTime("20230731", "2300", 290);
+        // parameter.setGridXY(areaToGridXY.searchByStateAndCityAndTown(stateAndCityAndTown));
+        parameter.setGridXY(dbManager.findDataByArea(stateAndCityAndTown));
+        
+        WeatherResponse response = api.getResponse(parameter);
+        WeatherResponseHour[] hoursResponse = response.getHoursResponse();
+    
+
+        List<WeatherResponseHour> result = new ArrayList<WeatherResponseHour>();
         for (int i = 0; i < 24; i++)
         {
-           result2.add(i,result[i]);
+            result.add(i, hoursResponse[i]);
         }
-
-        model.addAttribute("responseData", result2);
+        model.addAttribute("responseData", result);
 
         return "main";
     }

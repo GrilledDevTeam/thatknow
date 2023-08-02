@@ -1,106 +1,193 @@
 package com.grileddev.thatknow.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-
+/**
+ * 원하는 시간을 원하는 포맷으로 변환해서 반환해주는 클래스
+ */
 public class DateToDate {
+    
+    private final static String defaultFormatPattern = "yyyyMMdd";
 
-    //멤버
-    private String baseDate;
-    private String baseTime;
+    /** 현재시각 반환
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime now() {
+        return LocalDateTime.now();
+    }
 
-    //API 용 멤버
-    private String numOfRows;
+    /** 현재 시각의 어제 날짜 반환
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime yesterday() {
+        return now().minusDays(1);
+    }
 
-    //DB 용 멤버
-    private String strfcstDate;
-    private String strfcstTime;
+    /** 시간을 원하는 "yyyyMMdd" 형태로 출력
+     * @param localDateTime 시간
+     * @return String 반환
+     */
+    public static String DateToString(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern(defaultFormatPattern));
+    }
+
+    /** 시간을 원하는 패턴으로 문자열 반환  
+     * @param localDateTime 시간
+     * @param formatPattern 포맷형태
+     * @return String 반환
+     */
+    public static String DateToString(LocalDateTime localDateTime, String formatPattern) {
+        return localDateTime.format(DateTimeFormatter.ofPattern(formatPattern));
+    }
+
+    /** 현재시간을 "yyyyMMdd" 형태로 반환
+     * @return String 반환
+     */
+    public static String NowDateToString() {
+        return DateToString(now());
+    }
+
+
+    /** 현재시간을 원하는 패턴으로 문자열 반환  
+     * @param formatPattern 포맷형태
+     * @return String 반환
+     */
+    public static String NowDateToString(String formatPattern) {
+        return DateToString(now(), formatPattern);
+    }
 
 
     /**
-    *@param strData "2300" : 내일 00시 ~ 23시      (내일) TMX TMN
-    *@param strData -----------------------------
-    *@param strData "0200" : 오늘 03시 ~ 23시      (오늘) TMX TMN
-    *@param strData "0500" : 오늘 06시 ~ 23시      (오늘) TMX
-    *@param strData "0800" : 오늘 09시 ~ 23시      (오늘) TMX
-    *@param strData "1100" : 오늘 12시 ~ 23시      (오늘) TMX
-    *@param strData "1400" : 오늘 15시 ~ 23시      
-    *@param strData "1700" : 오늘 18시 ~ 23시      
-    *@param strData "2000" : 오늘 21시 ~ 23시      
-    */
-    // API 통신에 필요한 시간포멧(20230726)으로 설정
-    public void setTimeForAPIParameter(String strData){
-
-        SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-
-        // 2300
-        if (strData.equals("2300"))
-        {
-            // 어제 날짜
-            Date date = new Date((new Date()).getTime()+(1000*60*60*24*-1));
-            this.baseDate = apiDateFormat.format(date);
-
-            // 2300 시간
-            this.baseTime = "2300";
-
-            // 데이터개수
-            this.numOfRows = "290";
-        }
-        // 이외 매개변수
-        else
-        {
-            // 오늘 날짜
-            Date date = new Date((new Date()).getTime());
-            this.baseDate = apiDateFormat.format(date);
-
-            // 시간
-            this.baseTime = strData;
-
-            // 데이터개수
-            int countTemp = 288 - (12 * ((Integer.parseInt(strData) / 100) + 1));
-
-            // 데이터개수에서 TMX / TNX 값 고려
-            if (strData.equals("2300") || strData.equals("0200"))
-            {
-                countTemp += 2;
-            }
-            if (strData.equals("0500") || strData.equals("0800") || strData.equals("1100"))
-            {
-                countTemp += 1;
-            }
-
-            this.numOfRows = String.valueOf(countTemp);
-        }
-    }
-
-
-    // DB 용 구현예정
-    /*
-     * @param 
+     * 기준시간에서 원하는 시간을 빼서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param years 변화량
+     * @return LocalDateTime 반환
      */
-    public void setTimeForDBManager(){
-
+    public static LocalDateTime beforeYears(LocalDateTime localDateTime, long years) {
+        return localDateTime.minusYears(years);
     }
 
-    public String getBaseDate() {
-        return baseDate;
+    /**
+     * 기준시간에서 원하는 시간을 빼서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param months 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime beforeMonths(LocalDateTime localDateTime, long months) {
+        return localDateTime.minusYears(months);
     }
 
-    public String getBaseTime() {
-        return baseTime;
+    /**
+     * 기준시간에서 원하는 시간을 빼서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param days 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime beforeDays(LocalDateTime localDateTime, long days) {
+        return localDateTime.minusYears(days);
     }
 
-    public String getNumOfRows() {
-        return numOfRows;
+    /**
+     * 기준시간에서 원하는 시간을 빼서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param hours 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime beforeHours(LocalDateTime localDateTime, long hours) {
+        return localDateTime.minusYears(hours);
     }
 
-    public String getfcstDate() {
-        return strfcstDate;
+    /**
+     * 기준시간에서 원하는 시간을 빼서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param minutes 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime beforeMinutes(LocalDateTime localDateTime, long minutes) {
+        return localDateTime.minusYears(minutes);
+    }
+    
+    /**
+     * 기준시간에서 원하는 시간을 빼서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param seconds 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime beforeSeconds(LocalDateTime localDateTime, long seconds) {
+        return localDateTime.minusYears(seconds);
     }
 
-    public String getfcstTime() {
-        return strfcstTime;
+
+    /**
+     * 기준시간에서 원하는 시간을 더해서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param years 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime afterYears(LocalDateTime localDateTime,long years) {
+        return localDateTime.plusYears(years);
+    }
+
+    /**
+     * 기준시간에서 원하는 시간을 더해서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param mounths 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime afterMonths(LocalDateTime localDateTime,long months) {
+        return localDateTime.plusMonths(months);
+    }
+
+    /**
+     * 기준시간에서 원하는 시간을 더해서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param days 변화량
+     * @return LocalDateTime 객체
+     */
+    public static LocalDateTime afterDays(LocalDateTime localDateTime,long days) {
+        return localDateTime.plusDays(days);
+    }
+
+    /**
+     * 기준시간에서 원하는 시간을 더해서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param hours 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime afterHours(LocalDateTime localDateTime,long hours) {
+        return localDateTime.plusHours(hours);
+    }
+
+    /**
+     * 기준시간에서 원하는 시간을 더해서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param minutes 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime afterMinutes(LocalDateTime localDateTime,long minutes) {
+        return localDateTime.plusMinutes(minutes);
+    }
+
+    /**
+     * 기준시간에서 원하는 시간을 더해서 반환
+     * 
+     * @param localDateTime 기준시간
+     * @param seconds 변화량
+     * @return LocalDateTime 반환
+     */
+    public static LocalDateTime afterSeconds(LocalDateTime localDateTime,long seconds) {
+        return localDateTime.plusSeconds(seconds);
     }
 }
