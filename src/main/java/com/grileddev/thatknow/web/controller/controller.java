@@ -1,15 +1,12 @@
 package com.grileddev.thatknow.web.controller;
 
-import com.grileddev.thatknow.util.AreaToGridXY;
+import com.grileddev.thatknow.util.GridXY;
 import com.grileddev.thatknow.util.DateToDate;
-import com.grileddev.thatknow.util.WeatherAPI;
 import com.grileddev.thatknow.util.WeatherAPIParameter;
-import com.grileddev.thatknow.util.WeatherResponse;
 import com.grileddev.thatknow.util.WeatherResponseHour;
-import com.grileddev.thatknow.web.database.DBmanager;
+import com.grileddev.thatknow.web.service.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,54 +15,47 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.beans.factory.annotation.Value;
 
 
 @Controller
 @ComponentScan(basePackages={"com.grileddev.thatknow.util"})
 public class controller {
-    @Value("${Global.Data-go-kr-api-key}")
-    private String apiKey;
-
-    private final DBmanager dbManager;
-    private final AreaToGridXY areaToGridXY;
-
-
     @Autowired
-    public controller(DBmanager dbManager, AreaToGridXY areaToGridXY) {
-        this.dbManager = dbManager;
-        this.areaToGridXY = areaToGridXY;
-    }
-    
-    @GetMapping("/")
+    private service service;
+
+
+    @GetMapping("weather")
     public String main(){
-        return "main";
+        return "areaWeather";
     }
 
 
-    @PostMapping("/test")
-    public String mainTest(String stateAndCityAndTown, String time, Model model) throws IOException {
-        WeatherAPI api = new WeatherAPI(apiKey);
+    @PostMapping("searchAreaWeather")
+    public String loadWeather(Model model, String state, String city, String town, String baseTime) throws IOException {
         WeatherAPIParameter parameter = new WeatherAPIParameter();
 
         parameter.setBaseDate(DateToDate.DateToString(DateToDate.yesterday()));
-        parameter.setBaseTime(time);
+        parameter.setBaseTime(baseTime);
 
-        // parameter.setNumOfRowsByTime("20230731", "2300", 290);
-        // parameter.setGridXY(areaToGridXY.searchByStateAndCityAndTown(stateAndCityAndTown));
-        parameter.setGridXY(dbManager.findDataByArea(stateAndCityAndTown));
-        
-        WeatherResponse response = api.getResponse(parameter);
-        WeatherResponseHour[] hoursResponse = response.getHoursResponse();
-    
-
-        List<WeatherResponseHour> result = new ArrayList<WeatherResponseHour>();
-        for (int i = 0; i < 24; i++)
+        GridXY area = service.searchByArea(state, city, town);
+        if(area == null)
         {
-            result.add(i, hoursResponse[i]);
+            System.out.println("지역을 찾을 수 없습니다.");
+            return "areaWeather";
         }
-        model.addAttribute("responseData", result);
+        parameter.setGridXY(area);
+        
+        try
+        {
+            List<WeatherResponseHour> hoursResponse = service.weatherResponseRequest(parameter);
+        
+            model.addAttribute("response", hoursResponse);
+        }
+        catch (Exception exception)
+        {
+            System.out.println(exception.getMessage());
+        }
 
-        return "main";
+        return "areaWeather";
     }
 }

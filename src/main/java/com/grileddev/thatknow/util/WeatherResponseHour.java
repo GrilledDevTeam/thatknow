@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class WeatherResponseHour {
     private String nx;
     private String ny;
@@ -52,53 +52,127 @@ public class WeatherResponseHour {
         // 나머지 category 와 fcstValue 예측 값 저장
         while (splitToken.hasMoreTokens())
         {
-            String temp = splitToken.nextToken();
+            String category = splitToken.nextToken();
 
             // 각 카테고리에 대응하는 fcstValue 값 저장
-            switch (temp)
+            switch (category)
             {
                 case "TMP":
                     this.TMP = splitToken.nextToken();
                     break;
+
                 case "TMN":
                     this.TMN = splitToken.nextToken();
+
                     break;
                 case "TMX":
                     this.TMX = splitToken.nextToken();
                     break;
+
                 case "REH":
                     this.REH = splitToken.nextToken();
                     break;
+
                 case "SKY":
                     this.SKY = splitToken.nextToken();
                     break;
+
                 case "POP":
                     this.POP = splitToken.nextToken();
                     break;
+
                 case "PTY":
                     this.PTY = splitToken.nextToken();
                     break;
+
                 case "PCP":
                     this.PCP = splitToken.nextToken();
                     break;
+
                 case "SNO":
                     this.SNO = splitToken.nextToken();
                     break;
+
                 case "WSD":
                     this.WSD = splitToken.nextToken();
                     break;
+
+                default:
+                    break;
             }
         }
-    }
 
-    public String getData() {
-        return fcstTime + " TMP : " + TMP + " TMN : " + TMN + " TMX : " + TMX + " REH : " + REH + " SKY : " + SKY + " POP : " + POP + " PTY : " + PTY + " PCP : " + PCP + " SNO : " + SNO + " WSD : " + WSD;
+
+        if (this.TMP == null)
+        {
+            this.TMP = "null";
+        }
+
+        if (this.TMN == null)
+        {
+            this.TMN = "null";
+        }
+
+        if (this.TMX == null)
+        {
+            this.TMX = "null";
+        }
+
+        if (this.REH == null)
+        {
+            this.REH = "null";
+        }
+
+        if (this.SKY == null)
+        {
+            this.SKY = "null";
+        }
+
+        if (this.POP == null)
+        {
+            this.POP = "null";
+        }
+
+        if (this.PTY == null)
+        {
+            this.PTY = "null";
+        }
+
+        if (this.PCP == null)
+        {
+            this.PCP = "null";
+        }
+
+        if (this.SNO == null)
+        {
+            this.SNO = "null";
+        }
+
+        if (this.WSD == null)
+        {
+            this.WSD = "null";
+        }
+    }
+    
+
+    @Override
+    public String toString() {
+        final String data = "nx : " + nx + " ny : " + ny + "baseDate : " + baseDate + " baseTime : " + baseTime +
+        " fcstDate : " + fcstDate + " fcstTime : " + fcstTime + " TMP : " + TMP + " TMN : " + TMN + " TMX : " + TMX +
+        " REH : " + REH + " SKY : " + SKY + " POP : " + POP + " PTY : " + PTY + " PCP : " + PCP + " SNO : " + SNO +
+        " WSD : " + WSD;
+
+        return data;
     }
 
     public WeatherResponseHourEntity toEntity() {
         return WeatherResponseHourEntity.builder()
         .nx(nx)
         .ny(ny)
+        .baseDate(baseDate)
+        .baseTime(baseTime)
+        .fcstDate(fcstDate)
+        .fcstTime(fcstTime)
         .TMP(TMP)
         .TMN(TMN)
         .TMX(TMX)

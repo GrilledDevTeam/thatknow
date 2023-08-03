@@ -1,21 +1,26 @@
 package com.grileddev.thatknow.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+
 public class WeatherResponse {
-    private WeatherResponseHour[] responseHours;
+    private List<WeatherResponseHour> responseHours;
+
     private String rawData;
 
     public WeatherResponse(String rawData) {
         this.rawData = rawData;
-        parsingData(rawData);
+        parsingData();
     }
 
-    private void parsingData(String ApiData) {
-        responseHours = new WeatherResponseHour[24];
-        String[] hourDataList = new String [24];
+    private void parsingData() {
+        responseHours = new ArrayList<WeatherResponseHour>();
+        String[] hourDataList = new String[24];
 
         for (int i = 0; i < hourDataList.length; i++) 
         {
@@ -25,7 +30,7 @@ public class WeatherResponse {
         try
         {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)jsonParser.parse(ApiData);
+            JSONObject jsonObject = (JSONObject)jsonParser.parse(rawData);
             JSONObject weatherResponse = (JSONObject)jsonObject.get("response");
             // JSONObject weatherHeader = (JSONObject)weatherResponse.get("header");
             // "resultCode":"00","resultMsg":"NORMAL_SERVICE"
@@ -100,7 +105,7 @@ public class WeatherResponse {
             {
                 if (!hourDataList[i].isEmpty())
                 {
-                    responseHours[i] = new WeatherResponseHour(hourDataList[i]);
+                    responseHours.add(new WeatherResponseHour(hourDataList[i]));
                 }
             }
         }
@@ -110,7 +115,7 @@ public class WeatherResponse {
         }
     }
 
-    public WeatherResponseHour[] getHoursResponse() {
+    public List<WeatherResponseHour> getResponseHours() {
         return responseHours;
     }
 

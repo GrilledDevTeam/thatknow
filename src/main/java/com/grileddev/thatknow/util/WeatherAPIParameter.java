@@ -8,6 +8,7 @@ public class WeatherAPIParameter {
     private String baseTime;
     private String nx;
     private String ny;
+    private GridXY gridXY;
 
     /**
      * @param numOfRows default : 290
@@ -25,6 +26,7 @@ public class WeatherAPIParameter {
         dataType = "JSON";
         baseDate = DateToDate.DateToString(DateToDate.yesterday());
         baseTime = "2300";
+        gridXY = null;
     }
     
     /**
@@ -298,17 +300,17 @@ public class WeatherAPIParameter {
     }
 
     public void setGridXY(GridXY gridXY) {
+        this.gridXY = new GridXY(gridXY);
         this.nx = gridXY.getX();
         this.ny = gridXY.getY();
     }
 
-    public void setNx(String nx) {
-        this.nx = nx;
+    public void setXY(String x, String y) {
+        this.gridXY = new GridXY(x, y);
+        this.nx = x;
+        this.ny = y;
     }
 
-    public void setNy(String ny) {
-        this.ny = ny;
-    }
     
     public String getNumOfRows() {
         return numOfRows;
@@ -331,7 +333,7 @@ public class WeatherAPIParameter {
     }
 
     public GridXY getGridXY() {
-        return new GridXY(this.nx, this.ny);
+        return gridXY;
     }
 
     public String getNx() {
@@ -340,5 +342,14 @@ public class WeatherAPIParameter {
 
     public String getNy() {
         return ny;
+    }
+
+    @Override
+    public String toString() {
+        final String data =  "numOfRows=" + numOfRows + "&" + "pageNo=" + pageNo + "&"
+                + "dataType=" + dataType + "&" + "base_date=" + baseDate + "&" + "base_time=" + baseTime + "&" + "nx="
+                + nx + "&" + "ny=" + ny;
+
+        return data;
     }
 }

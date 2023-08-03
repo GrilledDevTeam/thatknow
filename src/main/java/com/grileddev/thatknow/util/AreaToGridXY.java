@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.grileddev.thatknow.web.database.DBmanager;
+import com.grileddev.thatknow.web.entity.areaEntity.AreaEntity;
 
 
 public class AreaToGridXY{
@@ -12,40 +13,18 @@ public class AreaToGridXY{
     @Autowired
     private DBmanager dbManager;
     
-    
-    public DBmanager getDB() {
-        return dbManager;
-    }
-
     /**
      * 지역 이름으로 격자 좌표를 검색
      * @param stateAndCityAndTown state&city&town으로 구분된 지역이름
      * @return GridXY or null
      */
-    public GridXY searchByStateAndCityAndTown(String stateAndCityAndTown){
+    public GridXY searchByStateAndCityAndTown(String stateAndCityAndTown) {
         StringTokenizer tokenizer = new StringTokenizer(stateAndCityAndTown, "&");
-
-        tokenizer.nextToken(); // state
-        tokenizer.nextToken(); // city
-        tokenizer.nextToken(); // town
+        String state = tokenizer.nextToken();
+        String city = tokenizer.nextToken();
+        String town = tokenizer.nextToken();
         
-        // How to use...
-        // AreaEntity findedAreaEntity = repository.findAllByStateAndCityAndTown(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken());
-        
-
-        // 밑은 예시에 불과하고 실제로는 DB에서 데이터를 찾을때 반환되는 값이 null일때를 기준으로 나눠야겠죠?
-        boolean exist = true;
-        if (exist)
-        {
-            String x = "0";
-            String y = "0";
-
-            return new GridXY(x, y);
-        }
-        else
-        {
-            return null;
-        }
+        return searchByArea(state, city, town);
     }
 
 
@@ -57,21 +36,16 @@ public class AreaToGridXY{
      * @return GridXY or null
      */
     public GridXY searchByArea(String state , String city, String town){
-        // 지역이름을 통해 DB를 검색
+        AreaEntity area = dbManager.findAreaByArea(state, city, town);
 
-        // 밑은 예시에 불과하고 실제로는 DB에서 데이터를 찾을때 반환되는 값이 null일때를 기준으로 나눠야겠죠?
-
-        boolean exist = true;
-        if (exist)
+        if (area == null)
         {
-            String x = "0";
-            String y = "0";
+            return null;
 
-            return new GridXY(x, y);
         }
         else
         {
-            return null;
+            return new GridXY(area.getNx(), area.getNy());
         }
     }
 

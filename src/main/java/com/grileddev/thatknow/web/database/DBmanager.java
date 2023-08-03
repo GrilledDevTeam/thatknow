@@ -1,70 +1,72 @@
 package com.grileddev.thatknow.web.database;
 
-import com.grileddev.thatknow.web.DAO.WeatherResponseHourDAO;
+import com.grileddev.thatknow.web.database.DAO.AreaDAO;
+import com.grileddev.thatknow.web.database.DAO.WeatherResponseHourDAO;
+import com.grileddev.thatknow.web.database.repository.koreaAreaRepository.KoreaAreaRepository;
+import com.grileddev.thatknow.web.database.repository.koreaWeatherRepository.KoreaWeatherRepository;
 import com.grileddev.thatknow.web.entity.areaEntity.AreaEntity;
 import com.grileddev.thatknow.web.entity.weatherResponseHourEntity.WeatherResponseHourEntity;
-import com.grileddev.thatknow.web.repository.koreaAreaRepository.KoreaAreaRepository;
-import com.grileddev.thatknow.web.repository.koreaWeatherRepository.KoreaWeatherRepository;
 import com.grileddev.thatknow.util.GridXY;
+import com.grileddev.thatknow.util.WeatherResponse;
 import com.grileddev.thatknow.util.WeatherResponseHour;
 
-import java.util.StringTokenizer;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-
-public class DBmanager implements WeatherResponseHourDAO {
+public class DBmanager implements WeatherResponseHourDAO, AreaDAO {
     @Autowired
     private KoreaAreaRepository koreaAreaRepository;
 
     @Autowired
     private KoreaWeatherRepository koreaWeatherRepository;
 
-    private WeatherResponseHourEntity[] weatherResponseHourEntityList;
-    
-    
-    public DBmanager() {
-        weatherResponseHourEntityList = new WeatherResponseHourEntity[24];
+
+    //*** AreaDAO */
+    @Override
+    public void saveArea(AreaEntity areaEntity){
+        koreaAreaRepository.save(areaEntity);
     }
 
     @Override
-    public void saveWeatherData(WeatherResponseHour[] weatherResponseHourList) {
-        for (int i = 0; i < weatherResponseHourList.length; i++)
+    public AreaEntity findAreaByAreaId(String areaCode){
+        return koreaAreaRepository.findDataByAreaCode(areaCode);
+    }
+
+    @Override
+    public AreaEntity findAreaByArea(String state, String city, String town){
+        AreaEntity areaEntity = koreaAreaRepository.findAllByStateAndCityAndTown(state, city, town);
+        return areaEntity;
+    }
+    
+
+    //*** WeatherResponseHourDAO */
+    @Override
+    public void saveWeatherResponse(WeatherResponse weatherResponse){
+        saveWeatherResponseHours(weatherResponse.getResponseHours());
+    }
+
+    @Override
+    public void saveWeatherResponseHours(List<WeatherResponseHour> weatherResponseHours){
+        for (int i = 0; i < weatherResponseHours.size(); i++)
         {
-            weatherResponseHourEntityList[i] = weatherResponseHourList[i].toEntity();
-
-            // pk 설정
-            String keyX = weatherResponseHourEntityList[i].getNx();
-            String keyY = weatherResponseHourEntityList[i].getNy();
-            String keyDate = weatherResponseHourEntityList[i].getBaseDate();
-            String keyTime = weatherResponseHourEntityList[i].getBaseTime();
-
-            int primaryKey = Integer.parseInt(keyX + keyY + keyDate + keyTime) + i;
-            // ID = x + y + baseDate + baseTime + i(인덱스)   ex) (53 37 20230725 2300) + 1   1시 예측 데이터 키
-
-            weatherResponseHourEntityList[i].setId(primaryKey); 
-
-            koreaWeatherRepository.save(weatherResponseHourEntityList[i]);
+            koreaWeatherRepository.save(weatherResponseHours.get(i).toEntity());
         }
     }
 
     @Override
-    public WeatherResponseHourEntity findDataByNxAndNyAndFcstTime(String stateAndCityAndTown, String fcstDate) {
-        StringTokenizer tokenizer = new StringTokenizer(stateAndCityAndTown, "&");
-
-        AreaEntity areaEntity = koreaAreaRepository.findAllByStateAndCityAndTown(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken());
-
-        return koreaWeatherRepository.findDataByNxAndNyAndFcstTime(areaEntity.getNx(), areaEntity.getNy(), fcstDate);
+    public List<WeatherResponseHourEntity> findResponseHoursByAreaAndBaseDateAndBaseTime(String state, String city, String town, String baseDate, String baseTime){
+        AreaEntity areaEntity = koreaAreaRepository.findAllByStateAndCityAndTown(state, city, town);
+        return findResponseHoursByXYAndBaseDateAndBaseTime(areaEntity.getNx(), areaEntity.getNy(), baseDate, baseTime);
     }
     
     @Override
-    public GridXY findDataByArea(String stateAndCityAndTown){
+    public List<WeatherResponseHourEntity> findResponseHoursByGridXYAndBaseDateAndBaseTime(GridXY gridXY, String baseDate, String baseTime){
+        return findResponseHoursByXYAndBaseDateAndBaseTime(gridXY.getX(), gridXY.getY(), baseDate, baseTime);
+    }
 
-        StringTokenizer tokenizer = new StringTokenizer(stateAndCityAndTown, "&");
-
-        AreaEntity findedAreaEntity = koreaAreaRepository.findAllByStateAndCityAndTown(tokenizer.nextToken(), tokenizer.nextToken(), tokenizer.nextToken());
-
-        return new GridXY(findedAreaEntity.getNx(), findedAreaEntity.getNy());
+    @Override
+    public List<WeatherResponseHourEntity> findResponseHoursByXYAndBaseDateAndBaseTime(String nx, String ny, String baseDate, String baseTime){
+        return koreaWeatherRepository.findAllByNxAndNyAndBaseDateAndBaseTime(nx, ny, baseDate, baseTime);
     }
 }

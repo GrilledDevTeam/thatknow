@@ -23,7 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @PropertySource({ "classpath:application.properties" })
 @EnableJpaRepositories(
-    basePackages = "com.grileddev.thatknow.web.repository.koreaAreaRepository",
+    basePackages = "com.grileddev.thatknow.web.database.repository.koreaAreaRepository",
     entityManagerFactoryRef = "KoreaAreaEntityManager", 
     transactionManagerRef = "KoreaAreaTransactionManager"
 )
