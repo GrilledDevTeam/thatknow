@@ -1,0 +1,68 @@
+.weatherContainer-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+.weatherContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.weatherRow {
+  display: flex;
+  gap: 1px;
+  padding: 0px;
+  width: 100%;
+}
+
+.weatherCell {
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  width: 40px;
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 1;
+  font-size: 12px;
+}
+
+.icon {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.temperature {
+  margin-left: 10px;
+}
+
+.scroll-button {
+  width: 30px;
+  height: 30px;
+  background-color: gray;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.scroll-button.left {
+  margin-right: 5px;
+}
+
+.scroll-button.right {
+  margin-left: 5px;
+}

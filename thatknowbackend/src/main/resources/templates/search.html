@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+
+<html html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SEARCH</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<style>
+    /* 로딩 표시 스타일 */
+    .loading-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading{
+        position: relative;
+        width: 80px;
+        height: 80px;
+
+        top: 28%;
+        top: -webkit-calc(50% - 43px);
+        top: calc(50% - 43px);
+        left: 35%;
+        left: -webkit-calc(50% - 43px);
+        left: calc(50% - 43px);
+
+        border-radius: 50px;
+        background-color: rgba(255, 255, 255, .2);
+        border-width: 40px;
+        border-style: double;
+        border-color:transparent  #fff;
+
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing:border-box;
+            box-sizing:border-box;
+
+        -webkit-transform-origin:  50% 50%;
+            transform-origin:  50% 50% ;
+        -webkit-animation: loader8 2s linear infinite;
+            animation: loader8 2s linear infinite;
+    }
+
+    @-webkit-keyframes loader8{
+        0%{-webkit-transform:rotate(0deg);}
+        100%{-webkit-transform:rotate(360deg);}
+    }
+
+    @keyframes loader8{
+        0%{transform:rotate(0deg);}
+        100%{transform:rotate(360deg);}
+    }
+
+    div {
+        border: 2px solid black;
+    }
+
+    /* ------  */
+
+
+    .webContainer {
+        display: grid;
+        grid-template-rows: repeat(10, 1fr);
+        grid-template-columns: repeat(18, 1fr);
+        grid-gap: 0.5%;
+
+        width: 100%;
+        height: 98vh;
+    }
+
+    .logoContainer {
+        grid-row: 1 / 2;
+        grid-column: 1 / 3;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .headerContainer {
+        grid-row: 1 / 2;
+        grid-column: 3 / 19;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .menuContainer {
+        grid-row: 2 / 11;
+        grid-column: 1 / 3;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .contentsContainer {
+        grid-row: 2 / 11;
+        grid-column: 3 / 19;
+
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 0.3%;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .inputContainer {
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 0.5%;
+
+        width: 99%;
+        height: 99%;
+    }
+
+    .inputAreaDisplayDiv {
+        grid-row: 1 / 2;
+        grid-column: 1 / 4;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .inputGPSDiv {
+        grid-row: 1 / 2;
+        grid-column: 4 / 5;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .inputActivityRangeDiv {
+        grid-row: 2 / 3;
+        grid-column: 1 / 4;
+
+        width: 99%;
+        height: 99%;
+
+    }
+
+    .inputGenderDiv {
+        grid-row: 2 / 3;
+        grid-column: 4 / 5;
+
+        width: 99%;
+        height: 99%;
+    }
+    
+
+    .inputSensoryTemperatureRangeDiv {
+        grid-row: 3 / 4;
+        grid-column: 1 / 4;
+
+        width: 99%;
+        height: 99%;
+    }
+
+    .inputSearchDiv {
+        grid-row: 3 / 4;
+        grid-column: 4 / 5;
+
+        width: 99%;
+        height: 99%;
+    }
+
+    .weatherContainer {
+        grid-row: 1 / 4;
+        grid-column: 3 / 4;
+
+        width: 99%;
+        height: 99%;
+    }
+
+    .weatherContainer > table {
+        border-collapse: collapse;
+        width: 100%;
+        height: 100%;
+    }
+
+    .weatherContainer thead {
+        width: 100%;
+        height: 6.4%;
+    }
+
+    .weatherContainer tbody {
+        width: 100%;
+        height: 3.9%;
+    }
+
+    .weatherContainer thead th {
+        border: 1px solid black;
+        border-radius: 16px;
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .weatherContainer tbody td {
+        border: 1px solid black;
+        border-radius: 16px;
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .dressCodeSuggestionContainer {
+        grid-row: 1 / 4;
+        grid-column: 2 / 3;
+
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 4%;
+
+        width: 100%;
+        height: 99%;
+    }
+
+    .innerClothes {
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+
+        width: 99%;
+        height: 99%;
+        margin: 2%;
+        
+        margin-bottom: 10%;
+    }
+
+    .outerClothes {
+        grid-row: 2 / 5;
+        grid-column: 1 / 2;
+
+        width: 99%;
+        height: 50%;
+        margin: 2%;
+        margin-top: 10%;
+        margin-bottom: 30%;
+    }
+
+    .bottomClothes {
+        grid-row: 3 / 4;
+        grid-column: 2 / 3;
+
+        width: 99%;
+        height: 99%;
+        margin: 2%;
+        margin-top: 10%;
+    }
+
+    .shoesClothes {
+        grid-row: 4 / 5;
+        grid-column: 2 / 3;
+
+        width: 99%;
+        height: 99%;
+        margin: 3%;
+        margin-top: 10%;
+    }
+
+    .seasonalExtraClothes {
+        grid-row: 2 / 3;
+        grid-column: 3 / 4;
+
+        width: 99%;
+        height: 99%;
+        margin: 1%;
+        margin-top: 10%;
+    }
+
+    .weatherExtraClothes {
+        grid-row: 3 / 4;
+        grid-column: 3 / 4;
+
+        width: 99%;
+        height: 99%;
+        margin: 1%;
+        margin-top: 10%;
+    }
+
+    .TypeContainer {
+        grid-row: 2 / 4;
+        grid-column: 1 / 2;
+
+        display: grid;
+        grid-row: 1fr 1fr 1fr 1fr;
+
+        width: 99%;
+        height: 99%;
+    }
+</style>
+
+
+<body>
+    <!--웹 컨테이너-->
+    <div id="webContainer" class="webContainer">
+    
+        <!-- 로고 컨테이너 -->
+        <div id="logoContainer" class="logoContainer">
+            <p style="text-align:center; font-weight:bold; font-size:larger; margin: 25px;">THAT NKOW??</p>
+        </div>
+
+        <!-- 헤더 컨테이너 -->
+        <div id="headerContainer" class="headerContainer">
+
+        </div>
+
+        <!-- 메뉴 컨테이너 -->
+        <div id="menuContainer" class="menuContainer">
+            
+        </div>
+
+        <!-- 컨텐츠 컨테이너 -->
+        <div id ="contentsContainer" class="contentsContainer">
+
+            
+            <!-- 타입 제안 컨테이너-->
+            <div id="TypeContainer" class="TypeContainer">
+                <p id="ATMPCelsiusType"></p>
+                <p id="ATMPCelsiusSDType"></p>
+                <p id="THIType"></p>
+                <p id="THISDType"></p>
+                <p id="WSDType"></p>
+                <p id="WSDSDType"></p>
+                <p id="PTYType"></p>
+                <p id="PTYValidityType"></p>
+                <p id="POPType"></p>
+                <p id="POPSDType"></p>
+                <p id="SKYType"></p>
+                <p id="SKYValidityType"></p>
+                <p id="PCPType"></p>
+                <p id="PCPSDType"></p>
+                <p id="SNOType"></p>
+                <p id="SNOSDType"></p>
+            </div>
+
+            <!-- 입력칸 컨테이너 -->
+            <div id="inputContainer" class="inputContainer">
+
+                <div class="inputAreaDisplayDiv">
+                    <label for="areaList">지역 정보 :</label>
+                    <select id="areaList">
+                    </select>
+                    <hr>
+                    <label for="areaInput">지역 직접입력 :</label>
+                    <input type="text" id="areaInputState" placeholder="GPS가 안될때" value="제주특별자치도">
+                    <input type="text" id="areaInputCity" placeholder="GPS가 안될때" value="서귀포시">
+                    <input type="text" id="areaInputTown" placeholder="GPS가 안될때" value="동홍동">
+                </div>
+
+                <div class="inputGPSDiv">
+                    <form id="weatherForm">
+                        <div class="">
+                            <button style="margin:25px;" type="button" id="autoFillButton">사용자 위치 검색</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="inputActivityRangeDiv">
+                    <label for="inputRange">활동 시간 :</label>
+                    <input type="range" id="inputActivityRangeStart" min="0" max="48" step="1" oninput="limitStartRange(event); showRangeValue(event);">
+                    <input type="range" id="inputActivityRangeEnd" min="0" max="48" step="1" oninput="limitEndRange(event); showRangeValue(event);">
+
+                    <script>
+                        function limitStartRange(e){
+                            var currentHour = new Date().getHours();
+                            
+                            if (parseInt(e.target.value) < currentHour + 1)
+                            {
+                                e.target.value = currentHour + 1;
+                            }
+                        }
+
+                        function limitEndRange(e){
+                            var currentHour = new Date().getHours();
+                            
+                            if (parseInt(e.target.value) < currentHour + 2)
+                            {
+                                e.target.value = currentHour + 2;
+                            }
+                        }
+
+                        function showRangeValue(e) {
+                            var value = e.target.value;
+                            
+                            var showTagStartId = document.getElementById('activityRangeStartvalue');
+                            var showTagEndId = document.getElementById('activityRangeEndValue');
+
+                            if (e.target.id == "inputActivityRangeStart")
+                            {
+                                showTagStartId.innerHTML = value;
+                            }
+                            else if (e.target.id == "inputActivityRangeEnd")
+                            {
+                                showTagEndId.innerHTML = value;
+                            }
+                        }
+                    </script>
+
+                    <p>오늘 <span id="activityRangeStartvalue">?</span>시 ~ <span id="activityRangeEndValue">?</span>시</p>
+
+                </div>
+
+                <div class="inputGenderDiv">
+                    <input type="radio" name="gender" value="남자" checked>남성 옷
+                    <input type="radio" name="gender" value="여자">여성 옷
+                </div>
+
+                <div class="inputSensoryTemperatureRangeDiv">
+                    <label for="inputSensoryTemperature">체감 온도 :</label>
+                    <input type="range" id="inputSensoryTemperatureRange" min="-10" max="10" step="1" value="0" oninput="document.getElementById('value3').innerHTML=this.value">
+                    <p><span id="value3">0</span>℃ 추가</p>
+                </div>
+
+                <div class="inputSearchDiv">
+                    <button style="margin:25px;" type="button" id="weatherSearchButton">날씨 탐색</button>
+                </div>
+            </div>
+
+            <!-- 날씨정보칸 컨테이너-->
+            <div id="weatherContainer" class="weatherContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>X좌표</th>
+                            <th>Y좌표</th>
+                            <th>예보날짜</th>
+                            <th>예보시간</th>
+                            <th>현재기온</th>
+                            <th>최저기온</th>
+                            <th>최고기온</th>
+                            <th>습도</th>
+                            <th>풍속</th>
+                            <th>강수형태</th>
+                            <th>하늘형태</th>
+                            <th>강수확률</th>
+                            <th>강수량</th>
+                            <th>적설량</th>
+                            <th>체감온도</th>
+                            <th>불쾌지수</th>
+                        </tr>
+                    </thead>
+                    <tbody id="weatherTableBody">
+                        <!-- JavaScript가 이 부분을 업데이트할 것입니다. -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 옷추천 컨테이너 -->
+            <div id="dressCodeSuggestionContainer" class="dressCodeSuggestionContainer">
+                <div id="innerClothes" class="innerClothes">
+                    <p id="inner"></p> <!-- innerList -->
+                </div>
+                <div id="outerClothes" class="outerClothes">
+                    <p id="outer"></p>
+                </div>
+                <div id="bottomClothes" class="bottomClothes">
+                    <p id="bottom"></p>
+                </div>
+                <div id="shoesClothes" class="shoesClothes">
+                    <p id="shoes"></p>
+                </div>
+                <div id="seasonalExtraClothes" class="seasonalExtraClothes">
+                    <p id="seasonalExtra"></p>
+                </div>
+                <div id="weatherExtraClothes" class="weatherExtraClothes">
+                    <p id="weatherExtra"></p>
+                </div>
+            </div>
+
+            <!-- 로딩 표시를 위한 컨테이너 -->
+            <div id="loading" class="loading-container">
+                <div class="loading">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- JavaScript -->
+    <script>
+
+        //  ------------------ GPS ---------------------------------------------------------------------------------------------    
+        
+        
+        var originalData = [];
+
+        $(document).ready(function () {
+            // 현재 위치로 자동 채우기 버튼 클릭 이벤트 처리
+            $("#autoFillButton").click(function () {
+                if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var latitude = position.coords.latitude.toFixed(6);
+                    var longitude = position.coords.longitude.toFixed(6);
+                    
+                    $("input[name='latitudeSecondsDivide100']").val(latitude);
+                    $("input[name='longitudeSecondsDivide100']").val(longitude);
+                    loadArea(longitude, latitude);
+                });
+                } else {
+                alert("Geolocation is not available on this device.");
+                }
+            });
+
+        // 검색 버튼 클릭 이벤트 처리
+        function loadArea(longitudeSecondsDivide100, latitudeSecondsDivide100) {
+
+            // 로딩 표시를 보여줍니다.
+            $("#loading").show();
+
+            // AJAX 요청 보내기
+            $.ajax({
+                type: "POST",
+                url: "/searchAreaBylongitudeAndLatitude",
+                data: {
+                    longitudeSecondsDivide100: longitudeSecondsDivide100,
+                    latitudeSecondsDivide100: latitudeSecondsDivide100
+                },
+                success: function (data) {
+                    updateAreaList(data); // 리스트박스 업데이트 함수 호출
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching area data:", error);
+                    // 일정 시간 후에 다시 요청
+                    setTimeout(function () {
+                        $("#weatherSearchButton").click();
+                    }, 2000); // 2초 후에 다시 요청
+                },
+                complete: function () {
+                    // 로딩 표시를 숨깁니다.
+                    $("#loading").hide();
+                }
+            });
+        }
+
+    // 리스트박스 업데이트 함수
+        function updateAreaList(data) {
+            originalData = data;
+
+            var areaList = $("#areaList");
+            areaList.empty();
+
+            data.forEach(function (item) {
+            var option = "<option value='" + item.areaCode + "'>" + item.state + " " + item.city + " " + item.town + "</option>";
+            areaList.append(option);
+            });
+        }
+    });
+
+    //  ------------------ GPS ---------------------------------------------------------------------------------------------
+
+
+
+    // -------------- 검색 버튼 클릭 ----------------------------------------------------------------------------------------
+
+        $("#weatherSearchButton").click(function () {
+            
+            // -----  AJAX 요청전 보낼 매개변수 설정 --------------------------------------
+            var selectedIndex = $("#areaList")[0].selectedIndex;
+            var selectedData = originalData[selectedIndex];
+            
+            var areaInputState = $("#areaInputState").val();
+            var areaInputCity = $("#areaInputCity").val();
+            var areaInputTown = $("#areaInputTown").val();
+
+            var startRangeValue = $("#inputActivityRangeStart").val();
+            var endRangeValue = $("#inputActivityRangeEnd").val();
+
+            const currentDate = new Date();
+            const year = String(currentDate.getFullYear());
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작한다고 함
+            const startDays = String(currentDate.getDate() +  (startRangeValue >= 24 ? 1 : 0) ).padStart(2, '0');
+            const startHours = String(startRangeValue >= 24 ? startRangeValue - 24 : startRangeValue ).padStart(2, '0');
+            const endDays = String(currentDate.getDate() + ($("#inputActivityRangeEnd").val() > 24 ? 1 : 0)).padStart(2, '0');
+            const endHours = String($("#inputActivityRangeEnd").val() >= 24 ? $("#inputActivityRangeEnd").val() - 24 : $("#inputActivityRangeEnd").val()).padStart(2, '0');
+
+            var startDate = `${year}${month}${startDays}${startHours}`;
+            var endDate = `${year}${month}${endDays}${endHours}`;
+            
+            var gender = $("input[name=gender]:checked").val();
+            var ATMPCelsiusWeight = $("#inputSensoryTemperatureRange").val();
+
+            //console.log(originalData[selectedIndex].nx);
+            //console.log(originalData[selectedIndex].ny);
+            //console.log(startDate);
+            //console.log(endDate);
+            //console.log(gender);
+            //console.log(ATMPCelsiusWeight);
+            // ----------------------------------------------------------------------------
+
+            // ---------------------------AJAX 요청 보내기----------------------------------
+            if (selectedData && selectedData.nx && selectedData.ny)
+            {
+                $("#loading").show();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/searchByGridXY",
+                    data: {
+                        nx: originalData[selectedIndex].nx,
+                        ny: originalData[selectedIndex].ny,
+                        startActTime : startDate, 
+                        endActTime : endDate,
+                        ATMPCelsiusWeight : ATMPCelsiusWeight,
+                        gender : gender
+                    },
+                    success: function (data) {
+                        //console.log(JSON.stringify(data));
+                        for (key in data)
+                        {
+                            if (key == "WEATHER_PRODUCT_HOURS")
+                            {
+                                updateWeatherTable(data[key]); // 날씨 테이블 업데이트 함수 호출
+                            }
+                            else if (key == "CLOTHING")
+                            {
+                                updateDressCodeTable(data[key]); // 옷 추천 업데이트 함수 호출
+                            }
+                            else if (key == "WEATHER_STATE")
+                            {
+                                updateTypeTable(data[key]); // 타입 업데이트 함수 호출
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching weather data:", error);
+                        /*// 일정 시간 후에 다시 요청
+                        setTimeout(function () {
+                            $("#weatherSearchButton").click();
+                        }, 2000); // 2초 후에 다시 요청 */
+                    },
+                    complete: function () {
+                        // 로딩 표시를 숨깁니다.
+                        $("#loading").hide();
+                    }
+                });
+            }
+            else if (areaInputState != "" && areaInputCity != "" && areaInputTown != "") 
+            {
+                $("#loading").show();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/searchByArea",
+                    data: {
+                        areaInputState : areaInputState,
+                        areaInputCity : areaInputCity,
+                        areaInputTown : areaInputTown,
+                        startActTime: startDate,
+                        endActTime: endDate,
+                        ATMPCelsiusWeight: ATMPCelsiusWeight,
+                        gender: gender
+                    },
+                    success: function (data) {
+                        for (key in data)
+                        {
+                            if (key == "WEATHER_PRODUCT_HOURS")
+                            {
+                                updateWeatherTable(data[key]); // 날씨 테이블 업데이트 함수 호출
+                            }
+                            else if (key == "CLOTHING")
+                            {
+                                updateDressCodeTable(data[key]); // 옷 추천 업데이트 함수 호출
+                            }
+                            else if (key == "WEATHER_STATE")
+                            {
+                                updateTypeTable(data[key]); // 타입 업데이트 함수 호출
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching weather data:", error);
+                        // 일정 시간 후에 다시 요청
+                        setTimeout(function () {
+                            $("#weatherSearchButton").click();
+                        }, 2000); // 2초 후에 다시 요청
+                    },
+                    complete: function () {
+                        // 로딩 표시를 숨깁니다.
+                        $("#loading").hide();
+                    }
+                });
+            }
+            else 
+            {
+                alert("지역을 선택하거나 입력해주세요.");
+                return;
+            }
+        });
+
+
+
+    // -------------- 업데이트 합수들 ----------------------------------------------------------------------------------------
+
+        // 타입 업데이트 함수
+        function updateTypeTable(data) {
+            var ATMPCelsiusType = $("#ATMPCelsiusType");
+            var ATMPCelsiusSDType = $("#ATMPCelsiusSDType");
+            var THIType = $("#THIType");
+            var THISDType = $("#THISDType");
+            
+            var WSDType = $("#WSDType");
+            var WSDSDType = $("#WSDSDType");
+        
+            var PTYType = $("#PTYType");
+            var PTYValidityType = $("#PTYValidityType");
+        
+            var POPType = $("#POPType");
+            var POPSDType = $("#POPSDType");
+         
+            var SKYType = $("#SKYType");
+            var SKYValidityType = $("#SKYValidityType");
+        
+            var PCPType = $("#PCPType");
+            var PCPSDType = $("#PCPSDType");
+        
+            var SNOType = $("#SNOType");
+            var SNOSDType = $("#SNOSDType");
+
+            //empty
+            ATMPCelsiusType.empty();
+            ATMPCelsiusSDType.empty();
+            THIType.empty();
+            THISDType.empty();
+            WSDType.empty();
+            WSDSDType.empty();
+            PTYType.empty();
+            PTYValidityType.empty();
+            POPType.empty();
+            POPSDType.empty();
+            SKYType.empty();
+            SKYValidityType.empty();
+            PCPType.empty();
+            PCPSDType.empty();
+            SNOType.empty();
+            SNOSDType.empty();
+
+            //append
+
+            // 왜인지 모르겠지만 앞 대문자 나열들은 다 소문자로 바뀌어서 JSON 으로 옵니다
+            // ATEMPCelsiusType => atempcelsiusType
+
+            ATMPCelsiusType.append(data.atmpcelsiusType); 
+            ATMPCelsiusSDType.append(data.atmpcelsiusSDType);
+            THIType.append(data.thitype);
+            THISDType.append(data.thisdtype);
+            WSDType.append(data.wsdtype);
+            WSDSDType.append(data.wsdsdtype);
+            PTYType.append(data.ptytype);
+            PTYValidityType.append(data.ptyvalidityType);
+            POPType.append(data.poptype);
+            POPSDType.append(data.popsdtype);
+            SKYType.append(data.skytype);
+            SKYValidityType.append(data.skyvalidityType);
+            PCPType.append(data.pcptype);
+            PCPSDType.append(data.pcpsdtype);
+            SNOType.append(data.snotype);
+            SNOSDType.append(data.snosdtype);
+        }
+
+        // 옷 추천 업데이트 함수
+        function updateDressCodeTable(data) {
+            var inner = $("#inner");
+            var outer = $("#outer");
+            var bottom = $("#bottom");
+            var shoes = $("#shoes");
+            var weatherExtra = $("#weatherExtra");
+
+            var innerList = data.inner;
+            var outerList = data.outer;
+            var bottomList = data.bottom;
+            var shoesList = data.shoes;
+            var extraList = data.extra;
+
+            console.log(innerList);
+            console.log(outerList);
+            console.log(bottomList);
+            console.log(shoesList);
+            console.log(extraList);
+
+            innerList.forEach(function (item) {
+                inner.append(item.toString() + " ,");
+            });
+            outerList.forEach(function (item) {
+                outer.append(item.toString() + " ,");
+            });
+            bottomList.forEach(function (item) {
+                bottom.append(item.toString() + " ,");
+            });
+            shoesList.forEach(function (item) {
+                shoes.append(item.toString() +" ,");
+            });
+            extraList.forEach(function (item) {
+                weatherExtra.append(item.toString() + " ,");
+            });
+        }
+
+        // 날씨 테이블 업데이트 함수
+        function updateWeatherTable(data) {
+            var tableBody = $("#weatherTableBody");
+            tableBody.empty();
+
+            data.forEach(function (item) {
+                var row = "<tr>" +
+                    "<td>" + item.gridX + "</td>" +
+                    "<td>" + item.gridX + "</td>" +
+                    "<td>" + item.fcstDate + "</td>" +
+                    "<td>" + item.fcstTime + "</td>" +
+                    "<td>" + item.tmpcelsius + "</td>" +
+                    "<td>" + item.tmncelsius + "</td>" +
+                    "<td>" + item.tmxcelsius + "</td>" +
+                    "<td>" + item.reh + "</td>" +
+                    "<td>" + item.wsd + "</td>" +
+                    "<td>" + item.pty + "</td>" +
+                    "<td>" + item.sky + "</td>" +
+                    "<td>" + item.pop + "</td>" +
+                    "<td>" + item.pcp + "</td>" +
+                    "<td>" + item.sno + "</td>" +
+                    "<td>" + item.atmpcelsius + "</td>" +
+                    "<td>" + item.thi + "</td>" +
+                    "</tr>";
+                tableBody.append(row);
+            });
+        }
+    </script>
+</body>
+</html>

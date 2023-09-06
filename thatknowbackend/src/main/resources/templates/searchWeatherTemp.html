@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Area Weahter</title>
+</head>
+
+<style>
+    .inputForm 
+    {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    /* 로딩 표시 스타일 */
+    .loading-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading{
+    position: relative;
+    width: 80px;
+    height: 80px;
+
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, .2);
+    border-width: 40px;
+    border-style: double;
+    border-color:transparent  #fff;
+
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+        box-sizing:border-box;
+
+    -webkit-transform-origin:  50% 50%;
+        transform-origin:  50% 50% ;
+    -webkit-animation: loader8 2s linear infinite;
+        animation: loader8 2s linear infinite;
+    }
+
+    @-webkit-keyframes loader8{
+        0%{-webkit-transform:rotate(0deg);}
+        100%{-webkit-transform:rotate(360deg);}
+    }
+
+    @keyframes loader8{
+        0%{transform:rotate(0deg);}
+        100%{transform:rotate(360deg);}
+    }
+
+
+    
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1px;
+    }
+
+    .form-row p {
+        width: 70px;
+        margin-right: 10px;
+    }
+
+    .form-row input[type="text"] {
+        flex: 1;
+        padding: 5px;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 25px;
+    }
+
+    .form-row button {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+    .areaListBox {
+        width: 300px;
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .areaListBox label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .areaListBox select {
+        width: 100%;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #444444;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        color: #444444;
+    }
+
+
+    .weahterTable {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .weahterTable table {
+        margin: 0 auto;
+        text-align: center;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 2px solid #444444;
+    }
+
+    .weahterTable th, .weahterTable td {
+        border: 1px solid #444444;
+        margin: 0;
+        padding: 5px;
+    }
+
+    #stateList {
+        display: inline-block;
+        text-align: center;
+    }
+
+    #cityList {
+        display: inline-block;
+        text-align: center;
+    }
+    
+    #townList {
+        display: inline-block;
+        text-align: center;
+    }
+
+</style>
+
+
+<body>
+    <div class="inputForm">
+        <form id="weatherForm">
+            <div class="form-row">
+                <button type="button" id="autoFillButton">사용자 위치 검색</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="areaListBox">
+        <label for="areaList">지역 정보 :</label>
+        <select id="areaList">
+        </select>
+    </div>
+
+    <div class="inputForm">
+        <div class="form-row">
+            <button type="button" id="weatherSearchButton">날씨 탐색</button>
+        </div>
+    </div>
+
+    <div class="weahterTable">
+        <table>
+            <tbody id="weatherTableBody">
+                <!-- JavaScript가 이 부분을 업데이트할 것입니다. -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 로딩 표시를 위한 컨테이너 -->
+    <div id="loading" class="loading-container">
+        <div class="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- 지역 선택 리스트 박스 -->
+    <div>
+        <select id="stateList"></select>
+        <select id="cityList"></select>
+        <select id="townList"></select>
+    </div>
+
+    <div class="inputForm">
+        <div class="form-row">
+            <button type="button" id="weatherSearchButton2">날씨 탐색</button>
+        </div>
+    </div>
+
+
+    <div class="weahterTable">
+        <table>
+            <tbody id="weatherTableBody2">
+                <!-- JavaScript가 이 부분을 업데이트할 것입니다. -->
+            </tbody>
+        </table>
+    </div>
+    
+
+    <script>
+        // 원본 데이터를 저장하는 변수
+        var originalData = [];
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // 현재 위치로 자동 채우기 버튼 클릭 이벤트 처리
+            var autoFillButton = document.getElementById("autoFillButton");
+            if (autoFillButton) {
+                autoFillButton.addEventListener("click", function () {
+                    if ("geolocation" in navigator) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var latitude = position.coords.latitude.toFixed(6);
+                            var longitude = position.coords.longitude.toFixed(6);
+
+                            var latitudeInput = document.querySelector("input[name='latitudeSecondsDivide100']");
+                            if (latitudeInput) {
+                                latitudeInput.value = latitude;
+                            }
+
+                            var longitudeInput = document.querySelector("input[name='longitudeSecondsDivide100']");
+                            if (longitudeInput) {
+                                longitudeInput.value = longitude;
+                            }
+
+                            loadArea(longitude, latitude);
+                        });
+                    } else {
+                        alert("Geolocation is not available on this device.");
+                    }
+                });
+            }
+
+            // 테이블 표 초기화 버튼 클릭 이벤트 처리
+            var weatherSearchButton = document.getElementById("weatherSearchButton");
+            if (weatherSearchButton) {
+                weatherSearchButton.addEventListener("click", function () {
+                    var areaList = document.getElementById("areaList");
+                    var selectedIndex = areaList.selectedIndex;
+                    var selectedData = originalData[selectedIndex];
+
+                    if (!selectedData || !selectedData.nx || !selectedData.ny) {
+                        alert("지역 정보를 선택해주세요.");
+                        return;
+                    }
+
+                    var loading = document.getElementById("loading");
+                    if (loading) {
+                        loading.style.display = "block";
+                    }
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/searchWeatherByGridXY", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                updateWeatherTable(response);
+                            } else {
+                                console.error("Error fetching weather data:", xhr.statusText);
+                                setTimeout(function () {
+                                    weatherSearchButton.click();
+                                }, 2000); // 2초 후에 다시 요청
+                            }
+
+                            if (loading) {
+                                loading.style.display = "none";
+                            }
+                        }
+                    };
+
+                    var params = "nx=" + encodeURIComponent(originalData[selectedIndex].nx) + "&ny=" + encodeURIComponent(originalData[selectedIndex].ny);
+                    xhr.send(params);
+                });
+            }
+
+            // 검색 버튼 클릭 이벤트 처리
+            function loadArea(longitudeSecondsDivide100, latitudeSecondsDivide100) {
+                var loading = document.getElementById("loading");
+                if (loading) {
+                    loading.style.display = "block";
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/searchAreaBylongitudeAndLatitude", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            updateAreaList(response);
+                        } else {
+                            console.error("Error fetching area data:", xhr.statusText);
+                            setTimeout(function () {
+                                var weatherSearchButton = document.getElementById("weatherSearchButton");
+                                if (weatherSearchButton) {
+                                    weatherSearchButton.click();
+                                }
+                            }, 2000); // 2초 후에 다시 요청
+                        }
+
+                        if (loading) {
+                            loading.style.display = "none";
+                        }
+                    }
+                };
+
+                var params = "longitudeSecondsDivide100=" + encodeURIComponent(longitudeSecondsDivide100) + "&latitudeSecondsDivide100=" + encodeURIComponent(latitudeSecondsDivide100);
+                xhr.send(params);
+            }
+
+            // 리스트박스 업데이트 함수
+            function updateAreaList(data) {
+                originalData = data;
+
+                var areaList = document.getElementById("areaList");
+                if (areaList) {
+                    areaList.innerHTML = "";
+
+                    data.map((item) => {
+                        var option = document.createElement("option");
+                        option.textContent = item.state + " " + item.city + " " + item.town;
+                        areaList.appendChild(option);
+                    });
+                }
+            }
+            
+            // 테이블 업데이트 함수
+            function updateWeatherTable(data) {
+                var tableBody = document.getElementById("weatherTableBody");
+                if (tableBody) {
+                    tableBody.innerHTML = updateTable(data);
+                }
+            }
+                
+            // 지역 선택 리스트 박스 함수
+            loadStates(); // 페이지 로딩 시 자동으로 state 데이터를 가져와서 업데이트합니다.
+
+            function loadStates() {
+                var loadingElement = document.getElementById("loading");
+                if (loadingElement) {
+                    loadingElement.style.display = "block";
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/loadStatesFromDB", true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            updateStateList(data);
+                        } else {
+                            console.error("Error fetching state data:", xhr.statusText);
+                        }
+
+                        if (loadingElement) {
+                            loadingElement.style.display = "none";
+                        }
+                    }
+                };
+
+                xhr.send();
+            }
+
+            function updateStateList(states) {
+                defaultCityAndTownLists();
+                
+                var stateList = document.getElementById("stateList");
+                stateList.innerHTML = "";
+
+                var defaultOption = document.createElement("option");
+                defaultOption.textContent = "-- state --";
+                stateList.appendChild(defaultOption);
+
+                states.map((state) => {
+                    var option = document.createElement("option");
+                    option.textContent = state.state;
+                    option.value = state.state;
+                    stateList.appendChild(option);
+                });
+
+                // state 선택 시 city 데이터 가져오기
+                stateList.addEventListener("change", function () {
+                    var selectedState = this.value;
+                    if (selectedState) {
+                        loadCitiesByState(selectedState);
+                        defaultCityAndTownLists();
+                    }
+                });
+            }
+
+
+            function loadCitiesByState(state) {
+                //document.getElementById("loadingCities").style.display = "block";
+                var loadingCitiesElement = document.getElementById("loadingCities");
+                if (loadingCitiesElement) {
+                    loadingCitiesElement.style.display = "block";
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/loadCitiesFromDB?state=" + encodeURIComponent(state), true);  
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            updateCityList(data);
+                        } else {
+                            console.error("Error fetching city data:", xhr.statusText);
+                        }
+                        // document.getElementById("loadingCities").style.display = "none";
+                        if (loadingCitiesElement) {
+                            loadingCitiesElement.style.display = "none";
+                        }
+                    }
+                };
+
+                xhr.send();
+            }
+
+            function updateCityList(cities) {
+                var cityList = document.getElementById("cityList");
+                cityList.innerHTML = "";
+
+                var defaultOption = document.createElement("option");
+                defaultOption.text = "-- city --";
+                cityList.appendChild(defaultOption);
+
+                cities.map((city) => {
+                    var option = document.createElement("option");
+                    option.textContent = city.city;
+                    option.value = city.city;
+                    cityList.appendChild(option);
+                });
+                
+                // city 리스트 박스 업데이트 후 보이기
+                cityList.style.display = "inline-block";
+
+                cityList.addEventListener("change", function () {
+                    var selectedCity = this.value;
+                    var selectedState = document.getElementById("stateList").value;
+                    if (selectedCity) {
+                        loadTownsByStateAndCity(selectedState, selectedCity);
+                        defaultTownList();
+                    }
+                });
+            }
+
+            function loadTownsByStateAndCity(state, city) {
+                var loadingTownsElement = document.getElementById("loadingTowns");
+                if (loadingTownsElement) {
+                    loadingTownsElement.style.display = "block";
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/loadTownsFromDB?state=" + state + "&city=" + city, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            updateTownList(data); // town 리스트박스 업데이트 함수 호출
+                        } else {
+                            console.error("Error fetching town data:", xhr.statusText);
+                        }
+                        if (loadingTownsElement) {
+                            loadingTownsElement.style.display = "none";
+                        }
+                    }
+                };
+
+                xhr.send();
+            }
+
+            function updateTownList(towns) {
+                var townList = document.getElementById("townList");
+                townList.innerHTML = ""; // 기존 내용 삭제
+
+                var defaultOption = document.createElement("option");
+                defaultOption.text = "-- town --";
+                townList.appendChild(defaultOption);
+
+                towns.map((town) => {
+                    var option = document.createElement("option");
+                    option.textContent = town.town;
+                    townList.appendChild(option);
+                });
+
+                // town 리스트 박스 업데이트 후 다시 보이기
+                townList.style.display = "inline-block";
+            }
+
+            function defaultCityAndTownLists() {
+                var cityList = document.getElementById("cityList");
+                cityList.innerHTML = ""; // 기존 내용 삭제
+                defaultTownList();
+
+                var defaultOption = document.createElement("option");
+                defaultOption.text = "-- city --";
+                cityList.appendChild(defaultOption);
+            }
+
+            function defaultTownList() {
+                var townList = document.getElementById("townList");
+                townList.innerHTML = ""; // 기존 내용 삭제
+
+                var defaultOption = document.createElement("option");
+                defaultOption.text = "-- town --";
+                townList.appendChild(defaultOption);
+            }
+
+
+            // 테이블 표 초기화 버튼 클릭 이벤트 처리
+            document.getElementById("weatherSearchButton2").addEventListener("click", function () {
+                var state = document.getElementById("stateList").value;
+                var city = document.getElementById("cityList").value;
+                var town = document.getElementById("townList").value;
+
+                if (!state || !city || !town) {
+                    alert("지역 정보를 선택해주세요.");
+                    return;
+                }
+
+                // 로딩 표시를 보여줍니다.
+                document.getElementById("loading").style.display = "block";
+
+                // AJAX 요청 보내기
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/searchWeatherByArea", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            updateWeatherTable2(JSON.parse(xhr.responseText));
+                        } else {
+                            console.error("Error fetching weather data:", xhr.statusText);
+                            // 일정 시간 후에 다시 요청
+                            setTimeout(function () {
+                                document.getElementById("weatherSearchButton2").click();
+                            }, 2000); // 2초 후에 다시 요청
+                        }
+                        // 로딩 표시를 숨깁니다.
+                        document.getElementById("loading").style.display = "none";
+                    }
+                };
+                var requestData = "state=" + encodeURIComponent(state) +
+                                "&city=" + encodeURIComponent(city) +
+                                "&town=" + encodeURIComponent(town);
+                xhr.send(requestData);
+            });
+
+
+            // 테이블2 업데이트 함수
+            function updateWeatherTable2(data) {
+                var tableBody = document.getElementById("weatherTableBody2");
+                if (tableBody) {
+                    tableBody.innerHTML = updateTable(data);
+                }
+            }
+            
+            function updateTable(data) {
+                const addfcstDate = (item) => "<th>" + item.fcstDate + "</th>";
+                const addfcstTime = (item) => "<th>" + item.fcstTime +"</th>";
+                const addTMP = (item) => "<th>" + item.tmp + "</th>";
+                const addTMN = (item) => "<th>" + item.tmn + "</th>";
+                const addTMX = (item) => "<th>" + item.tmx + "</th>";
+                const addREH = (item) => "<th>" + item.reh + "</th>";
+                const addSKY = (item) => "<th>" + item.sky + "</th>";
+                const addPOP = (item) => "<th>" + item.pop + "</th>";
+                const addPTY = (item) => "<th>" + item.pty + "</th>";
+                const addPCP = (item) => "<th>" + item.pcp + "</th>";
+                const addSNO = (item) => "<th>" + item.sno + "</th>";
+                const addWSD = (item) => "<th>" + item.wsd + "</th>";
+
+                var rows = "";
+    
+                rows += "<tr>";
+                rows += "<th>" + "예보날짜" + "</th>";
+                rows += data.map(addfcstDate).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "예보시간" + "</th>";
+                rows += data.map(addfcstTime).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "TMP" + "</th>";
+                rows += data.map(addTMP).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "TMN" + "</th>";
+                rows += data.map(addTMN).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "TMX" + "</th>";
+                rows += data.map(addTMX).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "REH" + "</th>";
+                rows += data.map(addREH).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "SKY" + "</th>";
+                rows += data.map(addSKY).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "POP" + "</th>";
+                rows += data.map(addPOP).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "PTY" + "</th>";
+                rows += data.map(addPTY).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "PCP" + "</th>";
+                rows += data.map(addPCP).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "SNO" + "</th>";
+                rows += data.map(addSNO).join("");
+                rows += "</tr>";
+    
+                rows += "<tr>";
+                rows += "<th>" + "WSD" + "</th>";
+                rows += data.map(addWSD).join("");
+                rows += "</tr>";
+
+                return rows;
+            }
+        }); 
+    </script>
+</body>
+</html>

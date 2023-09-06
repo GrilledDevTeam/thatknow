@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Area Weahter</title>
+</head>
+
+<style>
+    .inputForm 
+    {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    /* 로딩 표시 스타일 */
+    .loading-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading{
+    position: relative;
+    width: 80px;
+    height: 80px;
+
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, .2);
+    border-width: 40px;
+    border-style: double;
+    border-color:transparent  #fff;
+
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+        box-sizing:border-box;
+
+    -webkit-transform-origin:  50% 50%;
+        transform-origin:  50% 50% ;
+    -webkit-animation: loader8 2s linear infinite;
+        animation: loader8 2s linear infinite;
+    }
+
+    @-webkit-keyframes loader8{
+        0%{-webkit-transform:rotate(0deg);}
+        100%{-webkit-transform:rotate(360deg);}
+    }
+
+    @keyframes loader8{
+        0%{transform:rotate(0deg);}
+        100%{transform:rotate(360deg);}
+    }
+
+
+    
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1px;
+    }
+
+    .form-row p {
+        width: 70px;
+        margin-right: 10px;
+    }
+
+    .form-row input[type="text"] {
+        flex: 1;
+        padding: 5px;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 25px;
+    }
+
+    .form-row button {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+    .areaListBox {
+        width: 300px;
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .areaListBox label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .areaListBox select {
+        width: 100%;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #444444;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        color: #444444;
+    }
+
+
+    .weahterTable {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .weahterTable table {
+        margin: 0 auto;
+        text-align: center;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 2px solid #444444;
+    }
+
+    .weahterTable th, .weahterTable td {
+        border: 1px solid #444444;
+        margin: 0;
+        padding: 5px;
+    }
+
+</style>
+
+
+<body>
+    <div class="inputForm">
+        <form id="weatherForm">
+            <div class="form-row">
+                <button type="button" id="autoFillButton">사용자 위치 검색</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="areaListBox">
+        <label for="areaList">지역 정보 :</label>
+        <select id="areaList">
+        </select>
+    </div>
+
+    <div class="inputForm">
+        <div class="form-row">
+            <button type="button" id="weatherSearchButton">날씨 탐색</button>
+        </div>
+    </div>
+
+
+    <div class="weahterTable">
+        <table>
+            <thead>
+                <tr>
+                    <th>x좌표</th>
+                    <th>y좌표</th>
+                    <th>발표날짜</th>
+                    <th>발표시간</th>
+                    <th>예보날짜</th>
+                    <th>예보시간</th>
+                    <th>TMP</th>
+                    <th>TMN</th>
+                    <th>TMX</th>
+                    <th>REH</th>
+                    <th>SKY</th>
+                    <th>POP</th>
+                    <th>PTY</th>
+                    <th>PCP</th>
+                    <th>SNO</th>
+                    <th>WSD</th>
+                </tr>
+            </thead>
+            <tbody id="weatherTableBody">
+                <!-- JavaScript가 이 부분을 업데이트할 것입니다. -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 로딩 표시를 위한 컨테이너 -->
+    <div id="loading" class="loading-container">
+        <div class="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script>
+        var originalData = [];
+        const RELOAD_DELAY_MS = 2000;
+        const loadingContainer = document.getElementById("loading");
+        const tableBody = document.getElementById("weatherTableBody");
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const autoFillButton = document.getElementById("autoFillButton");
+            const weatherSearchButton = document.getElementById("weatherSearchButton");
+            const areaList = document.getElementById("areaList");
+
+            autoFillButton.addEventListener("click", function() {
+                if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(successCallback, errorCallback,{ timeout:10000 });
+                } else {
+                    alert("Geolocation is not available on this browser.");
+                }
+
+                function successCallback(position) {
+                    var latitude = position.coords.latitude.toFixed(6);
+                    var longitude = position.coords.longitude.toFixed(6);
+                    console.log("latitude: " + latitude + ", longitude: " + longitude);
+
+                    loadArea(longitude, latitude);
+                }
+
+                function errorCallback(error) {
+                    console.error("Error getting location:", error);
+                    alert("Failed to get location.");
+                }
+            });
+
+            weatherSearchButton.addEventListener("click", function() {
+
+                const selectedIndex = areaList.selectedIndex;
+                var selectedData = originalData[selectedIndex];
+                
+                if (!selectedData || !selectedData.nx || !selectedData.ny) 
+                {
+                    alert("지역 정보를 선택해주세요.");
+                    return;
+                }
+                
+                showLoading();
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/searchWeatherByGridXY", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            updateWeatherTable(data);
+                        } else {
+                            console.error("Error fetching weather data:", xhr.statusText);
+                            setTimeout(function () {
+                                weatherSearchButton.click();
+                            }, RELOAD_DELAY_MS);
+                        }
+
+                        hideLoading();
+                    }
+                };
+
+                var requestData = "nx=" + originalData[selectedIndex].nx + "&ny=" + originalData[selectedIndex].ny;
+                xhr.send(requestData);
+            });
+
+
+            function loadArea(longitudeSecondsDivide100, latitudeSecondsDivide100) {
+                showLoading();
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/searchAreaBylongitudeAndLatitude", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            updateAreaList(data); // 리스트박스 업데이트 함수 호출
+                        } else {
+                            console.error("Error fetching area data:", xhr.statusText);
+                            setTimeout(function () {
+                                loadArea(longitudeSecondsDivide100, latitudeSecondsDivide100);
+                            }, RELOAD_DELAY_MS);
+                        }
+
+                        hideLoading();
+                    }
+                };
+                var requestData = "longitudeSecondsDivide100=" + longitudeSecondsDivide100 + "&latitudeSecondsDivide100=" + latitudeSecondsDivide100;
+                xhr.send(requestData);
+            }
+        });
+
+
+        function showLoading() {
+            loadingContainer.style.display = "block";
+        }
+        
+        function hideLoading() {
+            loadingContainer.style.display = "none";
+        }
+
+        function updateAreaList(data) {
+            originalData = data;
+
+            var areaList = document.getElementById("areaList");
+
+            while (areaList.firstChild) {
+                areaList.removeChild(areaList.firstChild);
+            }
+
+            data.forEach(function(item) {
+                var option = document.createElement("option");
+                option.value = item.areaCode;
+                option.textContent = item.state + " " + item.city + " " + item.town;
+                areaList.appendChild(option);
+            });
+        }
+
+        function updateWeatherTable(data) {
+
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+
+            data.forEach(function (item) {
+                var row = "<tr>" +
+                    "<td>" + item.nx + "</td>" +
+                    "<td>" + item.ny + "</td>" +
+                    "<td>" + item.baseDate + "</td>" +
+                    "<td>" + item.baseTime + "</td>" +
+                    "<td>" + item.fcstDate + "</td>" +
+                    "<td>" + item.fcstTime + "</td>" +
+                    "<td>" + item.tmp + "</td>" +
+                    "<td>" + item.tmn + "</td>" +
+                    "<td>" + item.tmx + "</td>" +
+                    "<td>" + item.reh + "</td>" +
+                    "<td>" + item.sky + "</td>" +
+                    "<td>" + item.pop + "</td>" +
+                    "<td>" + item.pty + "</td>" +
+                    "<td>" + item.pcp + "</td>" +
+                    "<td>" + item.sno + "</td>" +
+                    "<td>" + item.wsd + "</td>" +
+                    "</tr>";
+                tableBody.innerHTML += row; 
+            });
+        }
+    </script>
+</body>
+</html>
