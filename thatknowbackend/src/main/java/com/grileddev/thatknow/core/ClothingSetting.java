@@ -14,71 +14,7 @@ public class ClothingSetting {
     private ClothingSetting() {
     }
     public static ClothingSetting getInstance(double ATMPCelsius) {
-        setALLClothingMessage(ATMPCelsius);
         return instance;
-    }
-
-    public static void setALLClothingMessage(double ATMPCelsius) {
-        HatType.NONE.setMessage(ATMPCelsius);
-        HatType.CAP.setMessage(ATMPCelsius);
-        HatType.BEANIE.setMessage(ATMPCelsius);
-
-        InnerType.NONE.setMessage(ATMPCelsius);
-        InnerType.CROP_TOPS.setMessage(ATMPCelsius);
-        InnerType.SLEEVELESS.setMessage(ATMPCelsius);
-        InnerType.SHORT_SLEEVE.setMessage(ATMPCelsius);
-        InnerType.ONE_PIECE.setMessage(ATMPCelsius);
-        InnerType.LONG_SLEEVE.setMessage(ATMPCelsius);
-        InnerType.SHIRT.setMessage(ATMPCelsius);
-        InnerType.SWEATSHIRT.setMessage(ATMPCelsius);
-        InnerType.KNIT.setMessage(ATMPCelsius);
-
-        BottomType.NONE.setMessage(ATMPCelsius);
-        BottomType.SHORTS.setMessage(ATMPCelsius);
-        BottomType.SKIRT.setMessage(ATMPCelsius);
-        BottomType.COTTON_PANTS.setMessage(ATMPCelsius);
-        BottomType.SLACKS.setMessage(ATMPCelsius);
-        BottomType.JEANS.setMessage(ATMPCelsius);
-        BottomType.THICK_COTTON_PANTS.setMessage(ATMPCelsius);
-        BottomType.THICK_JEANS.setMessage(ATMPCelsius);
-
-        OuterType.NONE.setMessage(ATMPCelsius);
-        OuterType.VEST.setMessage(ATMPCelsius);
-        OuterType.HOODZIPUP.setMessage(ATMPCelsius);
-        OuterType.WINDBREAKER.setMessage(ATMPCelsius);
-        OuterType.BLAZER.setMessage(ATMPCelsius);
-        OuterType.DENIM_JACKET.setMessage(ATMPCelsius);
-        OuterType.CARDIGAN.setMessage(ATMPCelsius);
-        OuterType.LEATHER_JACKET.setMessage(ATMPCelsius);
-        OuterType.MA_1.setMessage(ATMPCelsius);
-        OuterType.FLEECE.setMessage(ATMPCelsius);
-        OuterType.PADDED_VEST.setMessage(ATMPCelsius);
-        OuterType.FIELD_JACKET.setMessage(ATMPCelsius);
-        OuterType.TRENCH_COAT.setMessage(ATMPCelsius);
-        OuterType.COAT.setMessage(ATMPCelsius);
-        OuterType.PADDED_COAT.setMessage(ATMPCelsius);
-        OuterType.LONG_PADDED_COAT.setMessage(ATMPCelsius);
-
-        ShoesType.NONE.setMessage(ATMPCelsius);
-        ShoesType.SLIPPERS.setMessage(ATMPCelsius);
-        ShoesType.SANDAL.setMessage(ATMPCelsius);
-        ShoesType.FLAT_SHOES.setMessage(ATMPCelsius);
-        ShoesType.HELLS.setMessage(ATMPCelsius);
-        ShoesType.RUNNING_SHOES.setMessage(ATMPCelsius);
-        ShoesType.SNEAKERS.setMessage(ATMPCelsius);
-        ShoesType.LOAFERS.setMessage(ATMPCelsius);
-        ShoesType.CHELSEA_BOOTS.setMessage(ATMPCelsius);
-        ShoesType.BOOTS.setMessage(ATMPCelsius);
-        ShoesType.RAIN_BOOTS.setMessage(ATMPCelsius);
-
-        ExtraType.NONE.setMessage(ATMPCelsius);
-        ExtraType.GLOVES.setMessage(ATMPCelsius);
-        ExtraType.MUFFLER.setMessage(ATMPCelsius);
-        ExtraType.SUNCREAM.setMessage(ATMPCelsius);
-        ExtraType.SUNGLASSES.setMessage(ATMPCelsius);
-        ExtraType.SMALL_UMBRELLA.setMessage(ATMPCelsius);
-        ExtraType.UMBRELLA.setMessage(ATMPCelsius);
-        ExtraType.RAIN_COAT.setMessage(ATMPCelsius);
     }
 
     private HashMap<String , List<Object>> case1 = new HashMap<String , List<Object>>(){
@@ -87,14 +23,12 @@ public class ClothingSetting {
                 HatType.NONE
                 ));
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.CROP_TOPS,
                 InnerType.SLEEVELESS,
                 InnerType.SHORT_SLEEVE,
                 InnerType.ONE_PIECE
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.SHORTS,
                 BottomType.SKIRT,
                 BottomType.COTTON_PANTS,
@@ -124,7 +58,6 @@ public class ClothingSetting {
                 HatType.NONE
                 ));
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.CROP_TOPS,
                 InnerType.SLEEVELESS,
                 InnerType.SHORT_SLEEVE,
@@ -133,7 +66,6 @@ public class ClothingSetting {
                 InnerType.SHIRT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.SHORTS,
                 BottomType.SKIRT,
                 BottomType.COTTON_PANTS,
@@ -165,7 +97,6 @@ public class ClothingSetting {
                 HatType.NONE
                 ));
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.SHORT_SLEEVE,
                 InnerType.ONE_PIECE,
                 InnerType.LONG_SLEEVE,
@@ -174,7 +105,6 @@ public class ClothingSetting {
                 InnerType.KNIT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.COTTON_PANTS,
                 BottomType.SLACKS,
                 BottomType.JEANS
@@ -203,14 +133,12 @@ public class ClothingSetting {
                 HatType.NONE
                 ));
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.LONG_SLEEVE,
                 InnerType.SHIRT,
                 InnerType.SWEATSHIRT,
                 InnerType.KNIT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.COTTON_PANTS,
                 BottomType.SLACKS,
                 BottomType.JEANS
@@ -244,14 +172,12 @@ public class ClothingSetting {
                 HatType.NONE
                 ));
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.LONG_SLEEVE,
                 InnerType.SHIRT,
                 InnerType.SWEATSHIRT,
                 InnerType.KNIT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.COTTON_PANTS,
                 BottomType.SLACKS,
                 BottomType.JEANS
@@ -289,14 +215,12 @@ public class ClothingSetting {
                 HatType.NONE
                 ));
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.LONG_SLEEVE,
                 InnerType.SHIRT,
                 InnerType.SWEATSHIRT,
                 InnerType.KNIT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.COTTON_PANTS,
                 BottomType.SLACKS,
                 BottomType.JEANS
@@ -333,14 +257,12 @@ public class ClothingSetting {
                 HatType.NONE
                 ));            
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.LONG_SLEEVE,
                 InnerType.SHIRT,
                 InnerType.SWEATSHIRT,
                 InnerType.KNIT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.COTTON_PANTS,
                 BottomType.SLACKS,
                 BottomType.JEANS,
@@ -367,8 +289,7 @@ public class ClothingSetting {
                 ));
             put("EXTRA" , createExtraList(
                 ExtraType.NONE,
-                ExtraType.GLOVES,
-                ExtraType.MUFFLER
+                ExtraType.GLOVES_AND_MUFFLER
                 ));
         }
     };
@@ -379,14 +300,12 @@ public class ClothingSetting {
                 HatType.NONE
                 ));            
             put("INNER" , createInnerList(
-                InnerType.NONE,
                 InnerType.LONG_SLEEVE,
                 InnerType.SHIRT,
                 InnerType.SWEATSHIRT,
                 InnerType.KNIT
                 ));
             put("BOTTOM" , createBottomList(
-                BottomType.NONE,
                 BottomType.COTTON_PANTS,
                 BottomType.SLACKS,
                 BottomType.JEANS
@@ -413,8 +332,7 @@ public class ClothingSetting {
                 ));
             put("EXTRA" , createExtraList(
                 ExtraType.NONE,
-                ExtraType.GLOVES,
-                ExtraType.MUFFLER
+                ExtraType.GLOVES_AND_MUFFLER
                 ));
         }
     };

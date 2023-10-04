@@ -6,50 +6,16 @@ public class Clothing {}
 enum HatType {
     NONE("none",
                     "/image/hat/none.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "없음"
+                    ,false),
     CAP("cap",
                     "/image/hat/cap.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else if(ATMPForDressCode >= 10)
-                            {
-                                setMessage("분기 3");
-                            }
-                            else
-                            {
-                                setMessage("분기 4");
-                            }
-                        }
-                    },
-    
+                    "캡",
+                    false),
     BEANIE("beanie",
                     "/image/hat/beanie.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    };
+                    "비니",
+                    false);
 
     private String name;
     private String url;
@@ -79,181 +45,44 @@ enum HatType {
         return isRecommended;
     }
 
-    public abstract void setMessage(double ATMPForDressCode);
-
-    public void setMessage(String message){
-        this.message = message;
-    }
-
     public void setIsRecommended(boolean isRecommended){
         this.isRecommended = isRecommended;
     }
 }
 
 enum InnerType {
-    NONE("none",
-                    "/image/inner/none.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
     CROP_TOPS("cropTops",
                     "/image/inner/cropTops.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
-
+                    "크롭탑",
+                    false),
     SLEEVELESS("sleeveless",
                     "/image/inner/sleeveless.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
-
+                    "민소매",
+                    false),
     SHORT_SLEEVE("shortSleeve",
                     "/image/inner/shortSleeve.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        }
-                    },
+                    "반팔",
+                    false),
     ONE_PIECE("onePiece",
                     "/image/inner/onePiece.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        }
-                    },
-
+                    "원피스",
+                    false),
     LONG_SLEEVE("longSleeve",
                     "/image/inner/longSleeve.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        }
-                    },
-    
+                    "긴팔",
+                    false),
     SHIRT("shirt",
                     "/image/inner/shirt.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        }
-                    },
-    
-    SWEATSHIRT("sweatshirt",
-                    "/image/inner/sweatshirt.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        }
-                    },
-    
+                    "셔츠",
+                    false),
+    SWEATSHIRT("sweatShirt",
+                    "/image/inner/sweatShirt.jpeg",
+                    "맨투맨",
+                    false),
     KNIT("knit",
                     "/image/inner/knit.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        }
-                    };
-
+                    "니트",
+                    false);
     
     private String name;
     private String url;
@@ -284,145 +113,47 @@ enum InnerType {
         return isRecommended;
     }
 
-    public abstract void setMessage(double ATMPForDressCode);
-
-    public void setMessage(String message){
-        this.message = message;
-    }
-
     public void setIsRecommended(boolean isRecommended){
         this.isRecommended = isRecommended;
     }
 }
 
 enum BottomType {
-    NONE("none",
-                    "/image/bottom/none.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
     SHORTS("shorts",
                     "/image/bottom/shorts.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 28)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        } 
-                    },
+                    "반바지",
+                    false),
+
     SKIRT("skirt",
                     "/image/bottom/skirt.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                                setMessage("분기 1");
-                        } 
-                    },
+                    "치마",
+                    false),
+
     COTTON_PANTS("cottonPants",
                     "/image/bottom/cottonPants.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 10)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        } 
-                    },
+                    "면바지",
+                    false),
+
     SLACKS("slacks",
                     "/image/bottom/slacks.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 10)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        } 
-                    },
+                    "슬랙스",
+                    false),
+
     JEANS("jeans",
                     "/image/bottom/jeans.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if (ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 10)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        } 
-                    },
+                    "청바지",
+                    false),
 
     THICK_COTTON_PANTS("thickCottonPants",
                     "/image/bottom/thickCottonPants.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "두꺼운면바지",
+                    false),
     
     THICK_JEANS("thickJeans",
                     "/image/bottom/thickJeans.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    };
- 
+                    "두꺼운청바지",
+                    false);
+
     private String name;
     private String url;
     private String message;
@@ -451,12 +182,6 @@ enum BottomType {
         return isRecommended;
     }
 
-    public abstract void setMessage(double ATMPForDressCode);
-
-    public void setMessage(String message){
-        this.message = message;
-    }
-
     public void setIsRecommended(boolean isRecommended){
         this.isRecommended = isRecommended;
     }
@@ -468,199 +193,83 @@ enum BottomType {
 enum OuterType {
     NONE("none",
                     "/image/outer/none.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "없음",
+                    false),
     VEST("vest",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/vest.jpeg",
+                    "조끼",
+                    false),
+
     HOODZIPUP("hoodZipUp",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/hoodZipUp.jpeg",
+                    "후드집업",
+                    false),
+ 
     WINDBREAKER("windbreaker",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/windbreaker.jpeg",
+                    "바람막이",
+                    false),
+
     BLAZER("blazer",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        } 
-                    },
+                    "/image/outer/blazer.jpeg",
+                    "블레이저",
+                    false),
+
     DENIM_JACKET("denimJacket",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        } 
-                    },
+                    "/image/outer/denimJacket.jpeg",
+                    "데님자켓",
+                    false),
+
     CARDIGAN("cardigan",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        } 
-                    },
+                    "/image/outer/cardigan.jpeg",
+                    "가디건",
+                    false),
+
     LEATHER_JACKET("leatherJacket",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/leatherJacket.jpeg",
+                    "레더자켓",
+                    false),
+
     MA_1("ma-1",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/ma-1.jpeg",
+                    "ma-1",
+                    false),
+
     FLEECE("fleece",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/fleece.jpeg",
+                    "플리스",
+                    false),
+
     PADDED_VEST("paddedVest",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/paddedVest.jpeg",
+                    "패딩조끼",
+                    false),
+
     FIELD_JACKET("fieldJacket",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/fieldJacket.jpeg",
+                    "필드자켓",
+                    false),
+
     TRENCH_COAT("trenchCoat",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        } 
-                    },
+                    "/image/outer/trenchCoat.jpeg",
+                    "트렌치코트",
+                    false),
+
     COAT("coat",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        } 
-                    },
+                    "/image/outer/coat.jpeg",
+                    "코트",
+                    false),
+
     PADDED_COAT("paddedCoat",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/outer/paddedCoat.jpeg",
+                    "패딩코트",
+                    false),
+
     LONG_PADDED_COAT("longPaddedCoat",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    };
+                    "/image/outer/longPaddedCoat.jpeg",
+                    "롱패딩코트",
+                    false);
+
     
     private String name;
     private String url;
@@ -690,12 +299,6 @@ enum OuterType {
         return isRecommended;
     }
 
-    public abstract void setMessage(double ATMPForDressCode);
-
-    public void setMessage(String message){
-        this.message = message;
-    }
-
     public void setIsRecommended(boolean isRecommended){
         this.isRecommended = isRecommended;
     }
@@ -705,153 +308,58 @@ enum OuterType {
 enum ShoesType {
     NONE("none",
                     "/image/shoes/none.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "없음",
+                    false),
+
     SLIPPERS("slippers",
-                    "/image/shoes/shoes.png",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/shoes/slippers.jpeg",
+                    "슬리퍼",
+                    false),
 
     SANDAL("sandal",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        } 
-                    },
+                    "/image/shoes/sandal.jpeg",
+                    "샌들",
+                    false),
 
     FLAT_SHOES("flatShoes",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/shoes/flatShoes.jpeg",
+                    "플랫슈즈",
+                    false),
 
     HELLS("hells",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/shoes/hells.jpeg",
+                    "힐",
+                    false),
 
     RUNNING_SHOES("runningShoes",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 10)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        } 
-                    },
+                    "/image/shoes/runningShoes.jpeg",
+                    "운동화",
+                    false),
 
     SNEAKERS("sneakers",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode >= 20)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else if(ATMPForDressCode >= 10)
-                            {
-                                setMessage("분기 2");
-                            }
-                            else
-                            {
-                                setMessage("분기 3");
-                            }
-                        } 
-                    },
+                    "/image/shoes/sneakers.jpeg",
+                    "스니커즈",
+                    false),
 
     LOAFERS("loafers",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        } 
-                    },
+                    "/image/shoes/loafers.jpeg",
+                    "로퍼",
+                    false),
 
     CHELSEA_BOOTS("chelseaBoots",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "/image/shoes/chelseaBoots.jpeg",
+                    "첼시부츠",
+                    false),
 
     BOOTS("boots",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "/image/shoes/boots.jpeg",
+                    "부츠",
+                    false),
     
     RAIN_BOOTS("rainBoots",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    };
-
+                    "/image/shoes/rainBoots.jpeg",
+                    "레인부츠",
+                    false);
 
     private String name;
     private String url;
@@ -881,12 +389,6 @@ enum ShoesType {
         return isRecommended;
     }
 
-    public abstract void setMessage(double ATMPForDressCode);
-
-    public void setMessage(String message){
-        this.message = message;
-    }
-
     public void setIsRecommended(boolean isRecommended){
         this.isRecommended = isRecommended;
     }
@@ -895,105 +397,32 @@ enum ShoesType {
 enum ExtraType {
     NONE("none",
                     "/image/extra/none.jpeg",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "없음",
+                    false),
     SUNGLASSES("sunglasses",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
-                
+                    "/image/extra/sunglasses.jpeg",
+                    "선글라스",
+                    false),
+
     SUNCREAM("suncream",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
-    
-    GLOVES("gloves",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
-    
-    MUFFLER("muffler",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode <= 10)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        }
-                    },
-    
-    SMALL_UMBRELLA("smallUmbrella",
-                    "/image/extra/extra.png",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "/image/extra/suncream.jpeg",
+                    "선크림",
+                    false),
+ 
+    GLOVES_AND_MUFFLER("glovesAndMuffler",
+                    "/image/extra/glovesAndMuffler.jpeg",
+                    "장갑, 머플러",
+                    false),
 
     UMBRELLA("umbrella",
-
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            setMessage("분기 1");
-                        }
-                    },
+                    "/image/extra/umbrella.jpeg",
+                    "우산",
+                    false),
     
     RAIN_COAT("rainCoat",
-                    "url",
-                    "message",
-                    false) {
-                        @Override
-                        public void setMessage(double ATMPForDressCode)
-                        {
-                            if(ATMPForDressCode <= 10)
-                            {
-                                setMessage("분기 1");
-                            }
-                            else
-                            {
-                                setMessage("분기 2");
-                            }
-                        }
-                    };
+                    "/image/extra/rainCoat.jpeg",
+                    "레인코트",
+                    false);
 
     private String name;
     private String url;
@@ -1021,12 +450,6 @@ enum ExtraType {
 
     public boolean getIsRecommended(){
         return isRecommended;
-    }
-
-    public abstract void setMessage(double ATMPForDressCode);
-
-    public void setMessage(String message){
-        this.message = message;
     }
 
     public void setIsRecommended(boolean isRecommended){

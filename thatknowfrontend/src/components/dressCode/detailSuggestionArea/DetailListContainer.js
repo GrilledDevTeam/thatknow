@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ClothingCardContainer from "./container/ClothingCardContainer";
 
 
@@ -24,8 +24,8 @@ function DetailListContainer({selectedList , selectedListSetter , selectedListCo
     }   
 
     return (
-        <div className="border border-4 overflow-auto w-90 h-90 rounded" style={{height: "500px"}}>
-            <h1 className="text-center fs-1 fw-bolder">세부 목록</h1>
+        <div className="border border-4 overflow-auto rounded shadow" style={{height: "550px"}}>
+            <h1 className="justify-content-center d-flex align-items-center fs-1 fw-bolder">세부 목록</h1>
             <hr className="border border-3" />
             {(() => {
                 if (selectedList == null)

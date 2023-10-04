@@ -1,9 +1,9 @@
 import React from "react";
 import "./WeatherGraph.css";
 
-function WeatherGraph(weatherData) {
+function WeatherGraph({weatherData}) {
   return (
-    <div className="weatherContainer-wrapper">
+    <div className="weatherContainerWrapper">
       <div className="scroll-button left" onClick={() => scrollContainer(-200)}>
         &#8249;
       </div>
@@ -11,8 +11,8 @@ function WeatherGraph(weatherData) {
       <div className="weatherContainer">
         <div className="weatherRow">
           <div className="weatherCell">오늘</div>
-          {weatherData.weatherData.length > 0 &&
-            weatherData.weatherData.map((item, index) => (
+          {weatherData.length > 0 &&
+            weatherData.map((item, index) => (
               <div className="weatherCell" key={index + "-fcstTime"}>
                 {item.fcstTime}
               </div>
@@ -25,8 +25,8 @@ function WeatherGraph(weatherData) {
             <div className="unit">(°C)</div>
           </div>
 
-          {weatherData.weatherData.length > 0 &&
-            weatherData.weatherData.map((item, index) => (
+          {weatherData.length > 0 &&
+            weatherData.map((item, index) => (
               <div className="weatherCell" key={index + "-tmpcelsius"}>
                 {item.tmpcelsius}
               </div>
@@ -38,8 +38,8 @@ function WeatherGraph(weatherData) {
             <div className="value">강수</div>
             <div className="unit">(mm)</div>
           </div>
-          {weatherData.weatherData.length > 0 &&
-            weatherData.weatherData.map((item, index) => (
+          {weatherData.length > 0 &&
+            weatherData.map((item, index) => (
               <div className="weatherCell" key={index + "-pcp"}>
                 {item.pcp === "강수없음" ? "0" : item.pcp}
               </div>
@@ -52,8 +52,8 @@ function WeatherGraph(weatherData) {
             <div className="unit">(m/s)</div>
           </div>
 
-          {weatherData.weatherData.length > 0 &&
-            weatherData.weatherData.map((item, index) => (
+          {weatherData.length > 0 &&
+            weatherData.map((item, index) => (
               <div className="weatherCell" key={index + "-wsd"}>
                 {item.wsd}
               </div>
@@ -65,8 +65,8 @@ function WeatherGraph(weatherData) {
             <div className="value">습도</div>
             <div className="unit">(%)</div>
           </div>
-          {weatherData.weatherData.length > 0 &&
-            weatherData.weatherData.map((item, index) => (
+          {weatherData.length > 0 &&
+            weatherData.map((item, index) => (
               <div className="weatherCell" key={index + "-reh"}>
                 {item.reh}
               </div>

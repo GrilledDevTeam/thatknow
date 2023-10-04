@@ -1,8 +1,11 @@
 import React from "react";
-import axios from "axios";
 import "./UserStyles.css";
+import {
+  searchWeatherSuggestionMsgByGridXYAndDate,
+  searchWeatherSuggestionMsgByAreaAndDate,
+} from "../api/axios";
 
-export default function SearchWeather({
+export default function SearchButtonWeather({
   type,
   item,
   state,
@@ -16,41 +19,43 @@ export default function SearchWeather({
   setMessageData,
   onLoadingChange,
 }) {
-  const handleSearchWeatherButton = () => {
-    let requestData = {};
+  const handleSearchWeatherButton = async () => {
+    let response;
     let retryCount = 0;
     const maxRetry = 3;
 
+    console.log(state);
+
     onLoadingChange(true);
-    if (type === "GPS" && item) {
-      requestData = {
-        nx: item.nx,
-        ny: item.ny,
-        startActTime: startActTime,
-        endActTime: endActTime,
-        ATMPCelsiusWeight: ATMPCelsiusWeight,
-      };
-    } else if (type === "Select" && state && city && town) {
-      requestData = {
-        state: state,
-        city: city,
-        town: town,
-        startActTime: startActTime,
-        endActTime: endActTime,
-        ATMPCelsiusWeight: ATMPCelsiusWeight,
-      };
-    }
 
     const performWeatherRequest = () => {
+      console.log("음~ 이것이 바로 탐색 버튼이다!");
 
-      axios
-        .post(`/api/searchBy${item.nx && item.ny && type === "GPS" ? "GridXY" : "Area"}`, null, {
-          params: requestData,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        })
+      if (type === "GPS" && item) {
+        if (item.nx === 0 || item.ny === 0) {
+          console.log("Empty Area Data");
+          return;
+        } else {
+          response = searchWeatherSuggestionMsgByGridXYAndDate(
+            item.nx,
+            item.ny,
+            startActTime,
+            endActTime,
+            ATMPCelsiusWeight
+          );
+        }
+      } else if (type === "searched" && state && city && town) {
+        response = searchWeatherSuggestionMsgByAreaAndDate(
+          state,
+          city,
+          town,
+          startActTime,
+          endActTime,
+          ATMPCelsiusWeight
+        );
+      }
+
+      response
         .then((response) => {
           console.log("success response");
           console.log(response.data);
@@ -77,7 +82,7 @@ export default function SearchWeather({
   return (
     <div>
       <button className="btn btn-dark" onClick={handleSearchWeatherButton}>
-        {type === "GPS" ? "GPS확인" : "Select확인"}
+        날씨 탐색
       </button>
     </div>
   );

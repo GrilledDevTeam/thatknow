@@ -8,7 +8,7 @@ import ShoesCell from "./suggestionArea/container/ShoesCell";
 import ExtraCell from "./suggestionArea/container/ExtraCell";
 import DetailListContainer from "./detailSuggestionArea/DetailListContainer";
 
-function DressCodeSuggestion( { clothingData , messageData } ) {
+function DressCodeSuggestion( { clothingData } ) {
 
     const [hatList, setHatList] = useState(null);
     const [innerList, setInnerList] = useState(null);
@@ -86,10 +86,9 @@ function DressCodeSuggestion( { clothingData , messageData } ) {
         setSelectedList("extraList");
     }
 
-
     return (
         <div className="row gy-5 p-2">
-            <div className="col-lg-6">
+            <div className="col-md-7">
                 <DressCodeContainer>
                     {recommendedHat && <HatCell recommendedHat={recommendedHat} onClick={selectHatList}/>}
                     {recommendedInner && <InnerCell recommendedInner={recommendedInner} onClick={selectInnerList}/>}
@@ -99,7 +98,7 @@ function DressCodeSuggestion( { clothingData , messageData } ) {
                     {recommendedExtra && <ExtraCell recommendedExtra={recommendedExtra} onClick={selectExtraList}/>}
                 </DressCodeContainer>
             </div>
-            <div className="col-lg-6">
+            <div className="col-md-5">
                 {(() => {
                     switch (selectedList) {
                         case "hatList":

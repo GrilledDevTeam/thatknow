@@ -12,7 +12,7 @@ export default function AreaListGPS({ latitude, longitude, onAreaGPSChange, onLo
       onLoadingChange(true);
       axios
         .post(
-          "/api/searchAreaBylongitudeAndLatitude",
+          "/api/searchAreasBylongitudeAndLatitude",
           {
             longitudeSecondsDivide100: longitude,
             latitudeSecondsDivide100: latitude,

@@ -1,4 +1,4 @@
-import ClothingCardComponent from '../component/ClothingCardComponent';
+import ClothingCardComponent from '../ClothingCardComponent';
 import 'App.css'
 
 const ClothingCardContainer = ({clothing , clothingCardOnClick}) => {

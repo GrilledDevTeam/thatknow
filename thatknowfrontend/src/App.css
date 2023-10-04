@@ -10879,56 +10879,6 @@ textarea.form-control-lg {
 .float-right {
   float: right !important;
 }
-.weatherContainer-wrapper {
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin: 0 auto;
-  max-width: 75%;
-}
-
-.weatherContainer {
-  display: grid;
-  grid-template-columns: repeat(24, 1fr);
-  gap: 5px;
-  border: 1px solid black;
-  padding: 10px;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 50%;
-}
-
-.weatherCell {
-  border: 1px solid gray;
-  padding: 5px;
-  text-align: center;
-  display: inline-block;
-  width: 40px;
-  position: sticky;
-  left: 0;
-  background-color: white;
-  z-index: 1;
-}
-
-.scroll-button {
-  width: 30px;
-  height: 30px;
-  background-color: gray;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
-.scroll-button.left {
-  margin-right: 5px;
-}
-
-.scroll-button.right {
-  margin-left: 5px;
-}
 
 .backgroundImage {
   width: 100%;
@@ -10936,18 +10886,5 @@ textarea.form-control-lg {
   background: url(../public/image/background/sun.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center center;
   background-attachment: fixed;
-}
-
-.suggestionImage {
-  width: 75px;
-  height: 75px;
-  object-fit: cover;
-}
-
-.detailImage {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
 }
