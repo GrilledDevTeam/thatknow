@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,23 +20,22 @@ import com.grileddev.thatknow.util.WeatherAPIParameter;
 import com.grileddev.thatknow.util.WeatherResponseHour;
 import com.grileddev.thatknow.web.service.service;
 
+
 @RestController
+@CrossOrigin(origins = "https://thatknow.duckdns.org")
 public class WeatherController {
+
 
     @GetMapping("/api/hello")
     public String hello() {
-        return "Hello World";
+        return "Hello Thatknow";
     }
 
     @Autowired
     private service service;
     
-
-    @PostMapping("/api/searchAreaBylongitudeAndLatitude")
-    public ResponseEntity<Object> searchArea(double longitudeSecondsDivide100, double latitudeSecondsDivide100){
-        // longitudeSecondsDivide100 = 126.5092923;
-        // latitudeSecondsDivide100 = 33.4649;
-
+    @PostMapping("/api/searchAreasBylongitudeAndLatitude")
+    public ResponseEntity<Object> searchAreasBylongitudeAndLatitude(double longitudeSecondsDivide100, double latitudeSecondsDivide100){
         List<Area> areas = service.searchByArea(longitudeSecondsDivide100, latitudeSecondsDivide100);
 
         if (areas == null)
@@ -61,12 +61,11 @@ public class WeatherController {
         
         if (city == null || town == null)
         {
-            area = service.searchByState(state);
-            // area = new GridXY(28, 8);
+            area = service.searchAreaByState(state);
         } 
         else 
         {
-            area = service.searchByArea(state, city, town);
+            area = service.searchAreaByStateAndCityAndTown(state, city, town);
         }
 
         if(area == null)
@@ -92,6 +91,8 @@ public class WeatherController {
         WeatherAPIParameter parameter = new WeatherAPIParameter();
 
         parameter.setRecentlyBaseTimeAndBaseDate();
+
+        // 48시간의 날씨를 불러오도록 디폴트 설정
         parameter.setNumOfRowsByBaseDateAfterHours(48);
         parameter.setXY(nx, ny);
 
@@ -107,9 +108,9 @@ public class WeatherController {
     }
     
 
-    @GetMapping("/api/loadStatesFromDB")
-    public ResponseEntity<Object> loadStatesFromDB() {
-        List<Area> areas = service.loadStatesFromDB();
+    @GetMapping("/api/loadAllArea")
+    public ResponseEntity<Object> loadAllArea() {
+        List<Area> areas = service.loadAllAreaFromDB();
 
         if (areas == null)
         {
@@ -121,8 +122,22 @@ public class WeatherController {
         }
     }
 
-    @GetMapping("/api/loadCitiesFromDB")
-    public ResponseEntity<Object> loadCitiesByStateFromDB(String state) {
+    @GetMapping("/api/loadOnlyStates")
+    public ResponseEntity<Object> loadOnlyStates() {
+        List<Area> areas = service.loadOnlyStatesFromDB();
+
+        if (areas == null)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found State");
+        }
+        else
+        {
+            return ResponseEntity.ok(areas);
+        }
+    }
+
+    @GetMapping("/api/loadCitiesByState")
+    public ResponseEntity<Object> loadCitiesByState(String state) {
         List<Area> areas = service.loadCitiesByStateFromDB(state);
 
         if (areas == null)
@@ -135,8 +150,8 @@ public class WeatherController {
         }
     }
 
-    @GetMapping("/api/loadTownsFromDB")
-    public ResponseEntity<Object> loadTownsByStateAndCityFromDB(String state, String city) {
+    @GetMapping("/api/loadTownsByStateAndCity")
+    public ResponseEntity<Object> loadTownsByStateAndCity(String state, String city) {
         List<Area> areas = service.loadTownsByStateAndCityFromDB(state, city);
 
         if (areas == null)
@@ -152,9 +167,9 @@ public class WeatherController {
     
     
 
-    @PostMapping("/api/searchByGridXY")
+    @PostMapping("/api/searchWeatherSuggestionMsgByGridXYAndDate")
     @ResponseBody
-    public ResponseEntity<Object> searchByGridXY(int nx, int ny, String startActTime, String endActTime, int ATMPCelsiusWeight) {
+    public ResponseEntity<Object> searchWeatherSuggestionMsgByGridXYAndDate(int nx, int ny, String startActTime, String endActTime, int ATMPCelsiusWeight) {
 
         WeatherAPIParameter parameter = new WeatherAPIParameter();
 
@@ -187,16 +202,15 @@ public class WeatherController {
     }
 
 
-    @PostMapping("/api/searchByArea")
+    @PostMapping("/api/searchWeatherSuggestionMsgByAreaAndDate")
     @ResponseBody
-    public ResponseEntity<Object> searchByArea(String state, String city, String town, String startActTime, String endActTime, int ATMPCelsiusWeight) {
-        
+    public ResponseEntity<Object> searchWeatherSuggestionMsgByAreaAndDate(String state, String city, String town, String startActTime, String endActTime, int ATMPCelsiusWeight) {
         WeatherAPIParameter parameter = new WeatherAPIParameter();
 
         parameter.setRecentlyBaseTimeAndBaseDate();
         parameter.setNumOfRowsByBaseDateAfterHours(48);
 
-        GridXY area = service.searchByArea(state, city, town);
+        GridXY area = service.searchAreaByStateAndCityAndTown(state, city, town);
         if(area == null)
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found Area");
