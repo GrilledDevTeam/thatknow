@@ -11,7 +11,7 @@ import com.grileddev.thatknow.core.RepresentationJudger;
 import com.grileddev.thatknow.core.WeatherManufacturer;
 import com.grileddev.thatknow.core.WeatherProductHour;
 import com.grileddev.thatknow.core.WeatherRepresentHour;
-import com.grileddev.thatknow.core.WeatherTypeSuggestion;
+import com.grileddev.thatknow.core.MessageSuggestion;
 import com.grileddev.thatknow.util.Area;
 import com.grileddev.thatknow.util.AreaToGridXY;
 import com.grileddev.thatknow.util.DateToDate;
@@ -79,8 +79,29 @@ public class service {
         }
     }
 
+    public List<Area> loadAllAreaFromDB() {
+        selectAreaEntities = dbManager.findAreasFromDB();
+        if (selectAreaEntities.size() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            List<Area> areas = new ArrayList<Area>();
+
+            for (AreaEntity entity : selectAreaEntities)
+            {
+                if (!entity.getTown().equals(""))
+                {
+                    areas.add(entity.toDTO());
+                }
+            }
+
+            return areas;
+        }
+    }
     
-    public List<Area> loadStatesFromDB() {
+    public List<Area> loadOnlyStatesFromDB() {
         selectAreaEntities = dbManager.findAreasFromDB();
         if (selectAreaEntities.size() == 0)
         {
@@ -150,16 +171,16 @@ public class service {
         }
     }
 
-    public List<String> searchByGridXY(int nx, int ny) {
-        return areaToGridXY.searchByGridXY(nx, ny);
+    public List<String> searchAreaByGridXY(int nx, int ny) {
+        return areaToGridXY.searchAreaByGridXY(nx, ny);
     }
     
-    public GridXY searchByArea(String state, String city, String town) {
-        return areaToGridXY.searchByArea(state, city, town);
+    public GridXY searchAreaByStateAndCityAndTown(String state, String city, String town) {
+        return areaToGridXY.searchAreaByStateAndCityAndTown(state, city, town);
     }
 
-    public GridXY searchByState(String state) {
-        return areaToGridXY.searchByState(state);
+    public GridXY searchAreaByState(String state) {
+        return areaToGridXY.searchAreaByState(state);
     }
 
     /**
@@ -209,16 +230,15 @@ public class service {
         List<WeatherProductHour> weatherProductHours = weatherManufacturer.getWeatherProductHours(weatherResponseHours);
 
         WeatherRepresentHour weatherRepresentHour = weatherManufacturer.getWeatherRepresentHour(weatherProductHours, actTimeList, ATMPCelsiusWeight);
-        
+
         RepresentationJudgementForType representationJudgementForType = representationJudger.getRepresentationJudgementForType(weatherRepresentHour);
         RepresentationJudgementForDressCode representationJudgementForDressCode = representationJudger.getRepresentationJudgementForDressCode(weatherRepresentHour);
 
-        WeatherTypeSuggestion weatherTypeSuggestion = dressCodeManufacturer.getWeatherTypeSuggestion(representationJudgementForType);
+        MessageSuggestion messageSuggestion = dressCodeManufacturer.getMessageSuggestion(representationJudgementForType);
         DressCodeSuggestion dressCodeSuggestion = dressCodeManufacturer.getDressCodeSuggestion(representationJudgementForDressCode);
 
-
         suggestion.put("WEATHER_PRODUCT_HOURS", weatherProductHours);
-        suggestion.put("WEATHER_STATE", weatherTypeSuggestion);
+        suggestion.put("WEATHER_STATE", messageSuggestion);
         suggestion.put("CLOTHING", dressCodeSuggestion);
         
         return suggestion;
