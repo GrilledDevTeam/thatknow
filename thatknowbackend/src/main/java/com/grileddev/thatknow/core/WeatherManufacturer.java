@@ -30,7 +30,7 @@ public class WeatherManufacturer {
             WeatherProductHour weatherProductHour = new WeatherProductHour(weatherResponseHour);
 
             //2022년 여름 평균 기온(24.5도)_출처e-나라지표(기상청 기상연보, 기상자료개방포털)
-            if (weatherProductHour.getTMPCelsius() > 24.5)
+            if (weatherProductHour.getTMPCelsius() > 20.0)
             {
                 weatherProductHour.setATMPCelsius(calculateSummerATMPCelsius(weatherResponseHour));
                 weatherProductHour.setTHI(calculateSummmerTHI(weatherResponseHour));
@@ -75,13 +75,13 @@ public class WeatherManufacturer {
         
         // 표준편차 값 설정
         representHour.setATMPCelsiusSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.ATMP_CELSIUS)));
-        representHour.setTHISD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.THI)));
-        representHour.setWSDSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.WSD)));
-        representHour.setSKYValidity(calculateStateValidity(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.SKY), SKY.values().length));
-        representHour.setPTYValidity(calculateStateValidity(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.PTY), PTY.values().length));
-        representHour.setPOPSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.POP)));
-        representHour.setPCPSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.PCP)));
-        representHour.setSNOSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.SNO)));
+        //representHour.setTHISD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.THI)));
+        //representHour.setWSDSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.WSD)));
+        //representHour.setSKYValidity(calculateStateValidity(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.SKY), SKY.values().length));
+        //representHour.setPTYValidity(calculateStateValidity(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.PTY), PTY.values().length));
+        //representHour.setPOPSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.POP)));
+        //representHour.setPCPSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.PCP)));
+        //representHour.setSNOSD(calculateSD(setCalculateDatas(rangedWeatherProductHours , RepresentHourType.SNO)));
 
         return representHour;
     }

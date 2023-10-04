@@ -17,19 +17,19 @@ public class RepresentationJudger
         representationJudjmentFor.setATMPCelsiusType(createATMPCelsiusType(weatherRepresentHour));
         representationJudjmentFor.setATMPCelsiusSDType(createATMPCelsiusSDType(weatherRepresentHour));
         representationJudjmentFor.setTHIType(createTHIType(weatherRepresentHour));
-        representationJudjmentFor.setTHISDType(createTHISDType(weatherRepresentHour));
+//        representationJudjmentFor.setTHISDType(createTHISDType(weatherRepresentHour));
         representationJudjmentFor.setWSDType(createWSDType(weatherRepresentHour));
-        representationJudjmentFor.setWSDSDType(createWSDSDType(weatherRepresentHour));
+//        representationJudjmentFor.setWSDSDType(createWSDSDType(weatherRepresentHour));
         representationJudjmentFor.setPTYType(createPTYType(weatherRepresentHour));
-        representationJudjmentFor.setPTYValidityType(createPTYSDType(weatherRepresentHour));
+//        representationJudjmentFor.setPTYValidityType(createPTYSDType(weatherRepresentHour));
         representationJudjmentFor.setPOPType(createPOPType(weatherRepresentHour));
-        representationJudjmentFor.setPOPSDType(createPOPSDType(weatherRepresentHour));
+//        representationJudjmentFor.setPOPSDType(createPOPSDType(weatherRepresentHour));
         representationJudjmentFor.setSKYType(createSKYType(weatherRepresentHour));
-        representationJudjmentFor.setSKYValidityType(createSKYSDType(weatherRepresentHour));
+//        representationJudjmentFor.setSKYValidityType(createSKYSDType(weatherRepresentHour));
         representationJudjmentFor.setPCPType(createPCPType(weatherRepresentHour));
-        representationJudjmentFor.setPCPSDType(createPCPSDType(weatherRepresentHour));
+//        representationJudjmentFor.setPCPSDType(createPCPSDType(weatherRepresentHour));
         representationJudjmentFor.setSNOType(createSNOType(weatherRepresentHour));
-        representationJudjmentFor.setSNOSDType(createSNOSDType(weatherRepresentHour));
+//        representationJudjmentFor.setSNOSDType(createSNOSDType(weatherRepresentHour));
 
 
         return representationJudjmentFor;
@@ -139,7 +139,7 @@ public class RepresentationJudger
     }
 
     // 불쾌지수 차이 타입 설정
-    private THISDType createTHISDType (WeatherRepresentHour weatherRepresentHour){
+/*     private THISDType createTHISDType (WeatherRepresentHour weatherRepresentHour){
         
         final Double THISD = weatherRepresentHour.getTHISD();
 
@@ -155,7 +155,7 @@ public class RepresentationJudger
         {
             return THISDType.NORMAL;
         }
-    }
+    } */
 
     // 바람 타입 설정 (보퍼트 풍력계급)
     private WSDType createWSDType (WeatherRepresentHour weatherRepresentHour){
@@ -216,7 +216,7 @@ public class RepresentationJudger
         }
     }
 
-    // 바람 차이 타입 설정
+/*     // 바람 차이 타입 설정
     private WSDSDType createWSDSDType (WeatherRepresentHour weatherRepresentHour){
         
         final double WSDSD = weatherRepresentHour.getWSDSD();
@@ -229,7 +229,7 @@ public class RepresentationJudger
         {
             return WSDSDType.NORMAL;
         }
-    }
+    } */
 
     // 강수타입 설정
     private PTYType createPTYType (WeatherRepresentHour weatherRepresentHour){
@@ -258,7 +258,7 @@ public class RepresentationJudger
         }
     }
 
-    // 강수타입 차이 설정
+/*     // 강수타입 차이 설정
     private PTYValidityType createPTYSDType (WeatherRepresentHour weatherRepresentHour){
         
         final boolean PTYVaildity = weatherRepresentHour.isPTYValidity();
@@ -271,7 +271,7 @@ public class RepresentationJudger
         {
             return PTYValidityType.FALSE;
         }
-    }
+    } */
 
     // 강수확률 타입 설정
     private POPType createPOPType (WeatherRepresentHour weatherRepresentHour){
@@ -296,7 +296,7 @@ public class RepresentationJudger
         }
     }
 
-    // 강수확률 차이 타입 설정
+/*     // 강수확률 차이 타입 설정
     private POPSDType createPOPSDType (WeatherRepresentHour weatherRepresentHour){
         
         final double POPSD = weatherRepresentHour.getPOPSD();
@@ -309,7 +309,7 @@ public class RepresentationJudger
         {
             return POPSDType.NORMAL;
         }
-    }
+    } */
 
     // 하늘 타입 설정
     private SKYType createSKYType (WeatherRepresentHour weatherRepresentHour){
@@ -330,7 +330,7 @@ public class RepresentationJudger
         }
     }
 
-    // 하늘 타입 차이 설정
+/*     // 하늘 타입 차이 설정
     private SKYValidityType createSKYSDType (WeatherRepresentHour weatherRepresentHour){
         
         final boolean SKYValidity = weatherRepresentHour.isSKYValidity();
@@ -343,7 +343,7 @@ public class RepresentationJudger
         {
             return SKYValidityType.FALSE;
         }
-    }
+    } */
 
     // 강수량 타입 설정
     private PCPType createPCPType (WeatherRepresentHour weatherRepresentHour){
@@ -377,7 +377,7 @@ public class RepresentationJudger
     }
 
     // 강수량 타입 차이 설정
-    private PCPSDType createPCPSDType (WeatherRepresentHour weatherRepresentHour){
+/*     private PCPSDType createPCPSDType (WeatherRepresentHour weatherRepresentHour){
         
         final double PCPSD = weatherRepresentHour.getPCPSD();
 
@@ -389,7 +389,7 @@ public class RepresentationJudger
         {
             return PCPSDType.NORMAL;
         }
-    }
+    } */
 
     // 적설량 타입 설정
     private SNOType createSNOType (WeatherRepresentHour weatherRepresentHour){
@@ -418,7 +418,7 @@ public class RepresentationJudger
         }
     }
 
-    // 적설량 타입 차이 설정
+/*     // 적설량 타입 차이 설정
     private SNOSDType createSNOSDType (WeatherRepresentHour weatherRepresentHour){
         
         final double SNOSD = weatherRepresentHour.getSNOSD();
@@ -432,7 +432,7 @@ public class RepresentationJudger
             return SNOSDType.NORMAL;
         }
     }
-
+ */
 
 
 
@@ -537,10 +537,18 @@ public class RepresentationJudger
         final double POP = weatherRepresentHour.getPOPMean();
         final double SNO = weatherRepresentHour.getSNOMean();
 
-
-        if (PTYMode.equals(PTY.NONE) && POP < 3)
+        // 적어도 거의 쨍쨍한 날씨면 sunny 나오게 비는 올수 있더라도
+        // 탐색시간중 절반 이상이 20% 이상이라면
+        if (PTYMode.equals(PTY.NONE))
         {
-            return WeatherStateDressCodeType.SUNNY;
+            if (POP < 11)
+            {
+                return WeatherStateDressCodeType.SUNNY;
+            }
+            else
+            {
+                return WeatherStateDressCodeType.SUNNY_RAINY;
+            }
         }
         else
         {

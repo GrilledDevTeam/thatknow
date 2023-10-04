@@ -9,30 +9,30 @@ public class RepresentationJudgementForType{
     private ATMPCelsiusSDType ATMPCelsiusSDType; // 체감온도 표준편차
 
     private THIType THIType; // 불쾌지수
-    private THISDType THISDType; // 불쾌지수 표준편차
+//    private THISDType THISDType; // 불쾌지수 표준편차
 
     private WSDType WSDType; // 바람세기
-    private WSDSDType WSDSDType; // 바람세기 표준편차
+//    private WSDSDType WSDSDType; // 바람세기 표준편차
 
 
     private PTYType PTYType; // 강수형태
-    private PTYValidityType PTYValidityType; // 강수형태 표준편차
+//    private PTYValidityType PTYValidityType; // 강수형태 표준편차
     
 
     private POPType POPType; // 강수확률
-    private POPSDType POPSDType; // 강수확률 표준편차
+//    private POPSDType POPSDType; // 강수확률 표준편차
 
     private SKYType SKYType; // 하늘상태
-    private SKYValidityType SKYValidityType; // 하늘상태 표준편차
+//    private SKYValidityType SKYValidityType; // 하늘상태 표준편차
 
     
     // PTY = RAIN
     private PCPType PCPType; // 강수량
-    private PCPSDType PCPSDType; // 강수량 표준편차
+//    private PCPSDType PCPSDType; // 강수량 표준편차
 
     // PTY = SNOW
     private SNOType SNOType; // 적설량
-    private SNOSDType SNOSDType; // 적설량 표준편차
+//    private SNOSDType SNOSDType; // 적설량 표준편차
 
 }
 

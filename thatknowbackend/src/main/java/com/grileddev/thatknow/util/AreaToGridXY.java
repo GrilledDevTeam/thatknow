@@ -21,7 +21,7 @@ public class AreaToGridXY{
      * @param town 읍/동/면
      * @return GridXY or null
      */
-    public GridXY searchByArea(String state , String city, String town){
+    public GridXY searchAreaByStateAndCityAndTown(String state , String city, String town){
         AreaEntity area = dbManager.findAreaByArea(state, city, town);
 
         if (area == null)
@@ -34,7 +34,7 @@ public class AreaToGridXY{
         }
     }
 
-    public GridXY searchByState(String state){
+    public GridXY searchAreaByState(String state){
         List<AreaEntity> area = dbManager.findAreaByState(state);
 
         if (area == null)
@@ -56,7 +56,7 @@ public class AreaToGridXY{
         }
     }
 
-    public List<String> searchByGridXY(int nx, int ny){
+    public List<String> searchAreaByGridXY(int nx, int ny){
         List<AreaEntity> area = dbManager.findAreaByNxNy(nx, ny);
 
         if (area == null)
@@ -92,7 +92,7 @@ public class AreaToGridXY{
      * @param longitude 경도
      * @param latitude 위도
      */
-    public GridXY searchByLongitudeAndLatitude(String longitude, String latitude){
+    public GridXY searchAreaByLongitudeAndLatitude(String longitude, String latitude){
         // 경도 위도로 DBManger에서 찾은 후 x, y 반환
 
         // 밑은 예시에 불과하고 실제로는 DB에서 데이터를 찾을때 반환되는 값이 null일때를 기준으로 나눠야겠죠?

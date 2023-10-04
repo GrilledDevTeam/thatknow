@@ -20,17 +20,17 @@ public class WeatherRepresentHour{
 
     // 표준편차 (standard deviation(SD) (위키백과))
     private double ATMPCelsiusSD;            // 4 이상 차이나면 일교차가 크다 판단  ,  출처 : (https://bluesky4152.tistory.com/26)
-    private Double THISD;                    // 4 이상 차이나면 불쾌지수가 크다 판단
+    //private Double THISD;                    // 4 이상 차이나면 불쾌지수가 크다 판단
                                                 //https://news.samsungdisplay.com/32491
-    private double WSDSD;                    // 2이상 차이나면 바람차가 크다 판단
+    //private double WSDSD;                    // 2이상 차이나면 바람차가 크다 판단
                                                 // https://ko.wiktionary.org/wiki/%EB%B6%80%EB%A1%9D:%EB%B3%B4%ED%8D%BC%ED%8A%B8%ED%92%8D%EB%A0%A5%EA%B3%84%EA%B8%89
-    private boolean SKYValidity;             // 2/3 이상 일정 상태에 위치하면 true
-    private boolean PTYValidity;             // 2/3 이상 일정 상태에 위치하면 true
-    private double POPSD;                    // 30정도 차이나면 강수확률 차이가 크다고 판단
+    //private boolean SKYValidity;             // 2/3 이상 일정 상태에 위치하면 true
+    //private boolean PTYValidity;             // 2/3 이상 일정 상태에 위치하면 true
+    //private double POPSD;                    // 30정도 차이나면 강수확률 차이가 크다고 판단
 
-    private double PCPSD;                    // 8정도 차이나면 강수량 차이가 크다고 판단
+    //private double PCPSD;                    // 8정도 차이나면 강수량 차이가 크다고 판단
                                                 //https://m.blog.naver.com/kma_131/222073284939
-    private double SNOSD;                    // 1cm정도 차이나면 적설량 차이가 크다고 판단
+    //private double SNOSD;                    // 1cm정도 차이나면 적설량 차이가 크다고 판단
 }
 
 

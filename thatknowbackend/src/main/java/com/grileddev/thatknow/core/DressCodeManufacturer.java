@@ -18,9 +18,9 @@ public class DressCodeManufacturer {
      
     private static ClothingSetting clothingSetting;
 
-    // 날씨 추천 (WeatherTypeSuggestion 반환)
-    public WeatherTypeSuggestion getWeatherTypeSuggestion(RepresentationJudgementForType representationJudgementForType) {
-        return createWeatherTypeSuggestion(representationJudgementForType);
+    // 날씨 추천 (MessageSuggestion 반환)
+    public MessageSuggestion getMessageSuggestion(RepresentationJudgementForType representationJudgementForType) {
+        return createMessageSuggestion(representationJudgementForType);
     }
 
     // 옷 추천 (DressCodeSuggestion 반환)
@@ -38,27 +38,216 @@ public class DressCodeManufacturer {
     // -------------------------------- 날씨상태 추천 설정 ------------------------------------------
 
 
-    private static WeatherTypeSuggestion createWeatherTypeSuggestion(RepresentationJudgementForType representationJudgementForType) {
-        WeatherTypeSuggestion weatherTypeSuggestion = new WeatherTypeSuggestion();
+    private static MessageSuggestion createMessageSuggestion(RepresentationJudgementForType representationJudgementForType) {
+        MessageSuggestion MessageSuggestion = new MessageSuggestion();
 
-        weatherTypeSuggestion.setATMPCelsiusType(representationJudgementForType.getATMPCelsiusType().getString());
-        weatherTypeSuggestion.setATMPCelsiusSDType(representationJudgementForType.getATMPCelsiusSDType().getString());
-        weatherTypeSuggestion.setTHIType(representationJudgementForType.getTHIType().getString());
-        weatherTypeSuggestion.setTHISDType(representationJudgementForType.getTHISDType().getString());
-        weatherTypeSuggestion.setWSDType(representationJudgementForType.getWSDType().getString());
-        weatherTypeSuggestion.setWSDSDMType(representationJudgementForType.getWSDSDType().getString());
-        weatherTypeSuggestion.setPTYType(representationJudgementForType.getPTYType().getString());
-        weatherTypeSuggestion.setPTYValidityType(representationJudgementForType.getPTYValidityType().getString());
-        weatherTypeSuggestion.setPOPType(representationJudgementForType.getPOPType().getString());
-        weatherTypeSuggestion.setPOPSDType(representationJudgementForType.getPOPSDType().getString());
-        weatherTypeSuggestion.setSKYType(representationJudgementForType.getSKYType().getString());
-        weatherTypeSuggestion.setSKYValidityType(representationJudgementForType.getSKYValidityType().getString());
-        weatherTypeSuggestion.setPCPType(representationJudgementForType.getPCPType().getString());
-        weatherTypeSuggestion.setPCPSDType(representationJudgementForType.getPCPSDType().getString());
-        weatherTypeSuggestion.setSNOType(representationJudgementForType.getSNOType().getString());
-        weatherTypeSuggestion.setSNOSDType(representationJudgementForType.getSNOSDType().getString());
+        // 온도 메세지 설정
 
-        return weatherTypeSuggestion;
+        StringBuilder temperatureMessage = new StringBuilder();
+
+        switch (representationJudgementForType.getATMPCelsiusType())
+        {
+            case VERY_HOT:
+                temperatureMessage.append("오늘은 매우 더워요.");
+                break;
+            case HOT:
+                temperatureMessage.append("오늘은 더워요.");
+                break;
+            case WARM:
+                temperatureMessage.append("오늘은 따뜻해요.");
+                break;
+            case NORMAL_WARM:
+                temperatureMessage.append("오늘은 온화해요.");
+                break;
+            case NORMAL:
+                temperatureMessage.append("오늘은 보통이에요.");
+                break;
+            case COOL:
+                temperatureMessage.append("오늘은 쌀쌀해요.");
+                break;
+            case COLD:
+                temperatureMessage.append("오늘은 춥네요.");
+                break;
+            case VERY_COLD:
+                temperatureMessage.append("오늘은 매우 춥네요.");
+                break;
+        }
+
+        switch (representationJudgementForType.getATMPCelsiusSDType())
+        {
+            case BIG:
+                temperatureMessage.append(" 일교차가 커요");
+                break;
+            case NORMAL:
+                break;
+        }
+
+    
+        switch (representationJudgementForType.getTHIType())
+        {
+            case COMFORT:
+                temperatureMessage.append("\n");
+                temperatureMessage.append("쾌적해요.");
+                break;
+            case LITTLE_DISCOMFORT:
+                temperatureMessage.append("\n");            
+                temperatureMessage.append("조금 불쾌해요.");
+                break;
+            case DISCOMFORT:
+                temperatureMessage.append("\n");
+                temperatureMessage.append("불쾌해요.");
+                break;
+            case VERY_DISCOMFORT:
+                temperatureMessage.append("\n");
+                temperatureMessage.append("매우 불쾌해요.");
+                break;
+            case NOT_DIFINED:
+                break;
+        }
+
+        MessageSuggestion.setTMPMessage(temperatureMessage.toString());
+        
+        // 바람 메세지 설정
+
+        StringBuilder windMessage = new StringBuilder();
+
+        switch (representationJudgementForType.getWSDType())
+        {
+            case CALM:
+                windMessage.append("바람이 없어요.");
+                break;
+            case LIGHT_AIR:
+                windMessage.append("바람이 거의 없어요.");
+                break;
+            case LIGHT_BREEZE:
+                windMessage.append("바람이 느껴져요.");
+                break;
+            case GENTLE_BREEZE:
+                windMessage.append("나뭇잎이 흔들려요.");
+                break;
+            case MODERATE_BREEZE:
+                windMessage.append("작은 가지가 흔들려요.");
+                break;
+            case FRESH_BREEZE:
+                windMessage.append("작은 나무가 흔들려요.");
+                break;
+            case STRONG_BREEZE:
+                windMessage.append("큰 나뭇가지가 흔들려요.");
+                break;
+            case NEAR_GALE:
+                windMessage.append("큰 나무가 흔들려요");
+                break;
+            case GALE:
+                windMessage.append("작은 나무가지가 꺾여요.");
+                break;
+            case STRONG_GALE:
+                windMessage.append("집에 손상이 있을정도로 바람이 강해요.");
+                break;
+            case STORM:
+                windMessage.append("수목이 뿌리째 뽑혀요");
+                break;
+            case VIOLENT_STORM:
+                windMessage.append("집이 무너질 정도로 바람이 강해요.");
+                break;
+            case HURRICANE:
+                windMessage.append("나가면 큰일나요");
+                break;
+        }
+
+        MessageSuggestion.setWindMessage(windMessage.toString());
+
+
+        // 날씨 메세지 설정
+
+        StringBuilder weatherMessage = new StringBuilder();
+
+        final SKYType SKY = representationJudgementForType.getSKYType();
+        final PTYType PTY = representationJudgementForType.getPTYType();
+        final PCPType PCP = representationJudgementForType.getPCPType();
+        final SNOType SNO = representationJudgementForType.getSNOType();
+
+        switch (SKY)
+        {
+            case SUNNY:
+                weatherMessage.append("하늘이 맑아요.");
+                break;
+            case CLOUDY:
+                weatherMessage.append("구름이 많아요.");
+                break;
+            case VERY_CLOUDY:
+                weatherMessage.append("날씨가 흐려요.");
+                break;
+        }
+
+        switch (PTY)
+        {
+            case NONE:
+                break;
+            case RAINY:
+                temperatureMessage.append("\n");
+                weatherMessage.append("비가 와요.");
+                break;
+            case RAINY_SNOWY:
+                temperatureMessage.append("\n");
+                weatherMessage.append("비와 눈이 와요.");
+                break;
+            case SNOWY:
+                temperatureMessage.append("\n");
+                weatherMessage.append("눈이 와요.");
+                break;
+            case SHOWER:
+                temperatureMessage.append("\n");
+                weatherMessage.append("소나기가 와요.");
+                break;
+        }
+
+        switch (PCP)
+        {
+            case NONE:
+                break;
+            case UNDER_1MM:
+                weatherMessage.append(" 비가 조금 와요 ");
+                break;
+            case UNDER_15MM:
+                weatherMessage.append(" 비가 와요 ");
+                break;
+            case UNDER_30MM:
+                weatherMessage.append(" 비가 많이 와요 ");
+                break;
+            case UNDER_50MM:
+                weatherMessage.append(" 비가 매우 많이 와요 ");
+                break;
+            case OVER_50MM:
+                weatherMessage.append(" 비가 매우매우 많이 와요");
+                break;
+        }
+
+        switch (SNO)
+        {
+            case NONE:
+                break;
+            case UNDER_1CM:
+                temperatureMessage.append("\n");
+                weatherMessage.append(" 눈이 조금 와요.");
+                break;
+            case UNDER_3CM:
+                temperatureMessage.append("\n");
+                weatherMessage.append(" 눈이 와요.");
+                break;
+            case UNDER_5CM:
+                temperatureMessage.append("\n");
+                weatherMessage.append(" 눈이 많이 와요.");
+                break;
+            case OVER_5CM:
+                temperatureMessage.append("\n");
+                weatherMessage.append(" 눈이 매우 많이 와요.");
+                break;
+        }
+
+        MessageSuggestion.setWeatherMessage(weatherMessage.toString());
+
+        
+        return MessageSuggestion;
     }
 
 
@@ -248,6 +437,20 @@ public class DressCodeManufacturer {
                         
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, true));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase1());
+
+                        setEnumRecommended(HatType.NONE);
+                        suggestionTemp.get("HAT").add(getEnumSettingRecommended(HatType.CAP , false));
+
+                        setEnumRecommended(InnerType.SHORT_SLEEVE);
+                        setEnumRecommended(OuterType.NONE);
+                        setEnumRecommended(BottomType.SHORTS);
+                        setEnumRecommended(ShoesType.SLIPPERS);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase1());
 
@@ -259,8 +462,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.SHORTS);
                         setEnumRecommended(ShoesType.SLIPPERS);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -300,6 +502,20 @@ public class DressCodeManufacturer {
 
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, true));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase2());
+
+                        setEnumRecommended(HatType.NONE);
+                        suggestionTemp.get("HAT").add(getEnumSettingRecommended(HatType.CAP , false));
+
+                        setEnumRecommended(InnerType.SHORT_SLEEVE);
+                        setEnumRecommended(OuterType.NONE);
+                        setEnumRecommended(BottomType.COTTON_PANTS);
+                        setEnumRecommended(ShoesType.SANDAL);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase2());
 
@@ -311,8 +527,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.COTTON_PANTS);
                         setEnumRecommended(ShoesType.SANDAL);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -351,6 +566,18 @@ public class DressCodeManufacturer {
 
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase3());
+
+                        setEnumRecommended(HatType.NONE);
+                        setEnumRecommended(InnerType.SHORT_SLEEVE);
+                        setEnumRecommended(OuterType.NONE);
+                        setEnumRecommended(BottomType.COTTON_PANTS);
+                        setEnumRecommended(ShoesType.RUNNING_SHOES);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase3());
 
@@ -360,8 +587,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.COTTON_PANTS);
                         setEnumRecommended(ShoesType.RUNNING_SHOES);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -398,6 +624,18 @@ public class DressCodeManufacturer {
                         setEnumRecommended(ExtraType.NONE);
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase4());
+
+                        setEnumRecommended(HatType.NONE);
+                        setEnumRecommended(InnerType.LONG_SLEEVE);
+                        setEnumRecommended(OuterType.NONE);
+                        setEnumRecommended(BottomType.COTTON_PANTS);
+                        setEnumRecommended(ShoesType.RUNNING_SHOES);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase4());
 
@@ -407,8 +645,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.COTTON_PANTS);
                         setEnumRecommended(ShoesType.RUNNING_SHOES);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -445,6 +682,18 @@ public class DressCodeManufacturer {
 
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase5());
+
+                        setEnumRecommended(HatType.NONE);
+                        setEnumRecommended(InnerType.SWEATSHIRT);
+                        setEnumRecommended(OuterType.NONE);
+                        setEnumRecommended(BottomType.JEANS);
+                        setEnumRecommended(ShoesType.RUNNING_SHOES);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase5());
 
@@ -454,8 +703,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.JEANS);
                         setEnumRecommended(ShoesType.RUNNING_SHOES);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -492,6 +740,18 @@ public class DressCodeManufacturer {
                         setEnumRecommended(ExtraType.NONE);
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase6());
+
+                        setEnumRecommended(HatType.NONE);
+                        setEnumRecommended(InnerType.LONG_SLEEVE);
+                        setEnumRecommended(OuterType.DENIM_JACKET);
+                        setEnumRecommended(BottomType.JEANS);
+                        setEnumRecommended(ShoesType.RUNNING_SHOES);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase6());
 
@@ -501,8 +761,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.JEANS);
                         setEnumRecommended(ShoesType.RUNNING_SHOES);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -539,6 +798,18 @@ public class DressCodeManufacturer {
                         setEnumRecommended(ExtraType.NONE);
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase7());
+
+                        setEnumRecommended(HatType.NONE);
+                        setEnumRecommended(InnerType.LONG_SLEEVE);
+                        setEnumRecommended(OuterType.FLEECE);
+                        setEnumRecommended(BottomType.THICK_JEANS);
+                        setEnumRecommended(ShoesType.RUNNING_SHOES);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase7());
 
@@ -548,8 +819,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.THICK_JEANS);
                         setEnumRecommended(ShoesType.RUNNING_SHOES);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;
@@ -586,6 +856,18 @@ public class DressCodeManufacturer {
                         setEnumRecommended(ExtraType.NONE);
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
                         break;
+                    case SUNNY_RAINY:
+                        suggestionTemp = deepCopy(clothingSetting.getCase8());
+
+                        setEnumRecommended(HatType.NONE);
+                        setEnumRecommended(InnerType.LONG_SLEEVE);
+                        setEnumRecommended(OuterType.LONG_PADDED_COAT);
+                        setEnumRecommended(BottomType.THICK_JEANS);
+                        setEnumRecommended(ShoesType.BOOTS);
+
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SUNCREAM, false));
+                        break;
                     case RAINY:
                         suggestionTemp = deepCopy(clothingSetting.getCase8());
 
@@ -595,8 +877,7 @@ public class DressCodeManufacturer {
                         setEnumRecommended(BottomType.THICK_JEANS);
                         setEnumRecommended(ShoesType.BOOTS);
 
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.SMALL_UMBRELLA, true));
-                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , false));
+                        suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.UMBRELLA , true));
                         suggestionTemp.get("SHOES").add(getEnumSettingRecommended(ShoesType.RAIN_BOOTS , false));
                         suggestionTemp.get("EXTRA").add(getEnumSettingRecommended(ExtraType.RAIN_COAT , false));
                         break;

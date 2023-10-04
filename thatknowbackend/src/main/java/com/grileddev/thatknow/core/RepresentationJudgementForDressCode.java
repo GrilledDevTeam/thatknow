@@ -26,6 +26,7 @@ enum ATMPCelsiusDressCodeType {
 
 enum WeatherStateDressCodeType {
     SUNNY,
+    SUNNY_RAINY,
     RAINY,
     VERY_RAINY,
     SNOWY,
